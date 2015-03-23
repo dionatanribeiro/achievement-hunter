@@ -4,15 +4,20 @@ import java.util.List;
 
 public class SteamGame {
 
-	private Long appId;
+	private Integer appId;
 	private String name;
 	private List<SteamAchievement> achievements;
 
-	public Long getAppId() {
+	public SteamGame(Integer appId, String name) {
+		this.appId = appId;
+		this.name = name;
+	}
+
+	public Integer getAppId() {
 		return appId;
 	}
 
-	public void setAppId(Long appId) {
+	public void setAppId(Integer appId) {
 		this.appId = appId;
 	}
 
