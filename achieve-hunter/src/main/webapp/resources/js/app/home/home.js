@@ -8,8 +8,9 @@ function ViewModel() {
 	self.steamId = ko.observable();
 	
 	self.loadSteamProfile = function() {
-		$.get('/achieve-hunter/load-steam-profile/' + self.steamId(), function(data) {
-			self.realName(data);
+		$.getJSON('/achieve-hunter/load-steam-profile/' + self.steamId(), function(data) {
+//			self.realName(data);
+			console.log("data: ", data);
 		});
 	}
 	
