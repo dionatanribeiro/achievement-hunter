@@ -1,16 +1,16 @@
-package br.com.achievehunter.model;
+package br.com.achievehunter.model.steam;
 
 import java.util.List;
 
-public class SteamProfile {
+public class Profile {
 
 	private Long steamId;
-	private String nickname;
-	private String realname;
+	private String nickName;
+	private String realName;
 	private String avatar;
 	private String avatarMedium;
 	private String avatarFull;
-	private List<SteamGame> games;
+	private List<Game> games;
 
 	public Long getSteamId() {
 		return steamId;
@@ -20,20 +20,20 @@ public class SteamProfile {
 		this.steamId = steamId;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getNickName() {
+		return nickName;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
-	public String getRealname() {
-		return realname;
+	public String getRealName() {
+		return realName;
 	}
 
-	public void setRealname(String realname) {
-		this.realname = realname;
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 	public String getAvatar() {
@@ -60,11 +60,11 @@ public class SteamProfile {
 		this.avatarFull = avatarFull;
 	}
 
-	public List<SteamGame> getGames() {
+	public List<Game> getGames() {
 		return games;
 	}
 
-	public void setGames(List<SteamGame> games) {
+	public void setGames(List<Game> games) {
 		this.games = games;
 	}
 	

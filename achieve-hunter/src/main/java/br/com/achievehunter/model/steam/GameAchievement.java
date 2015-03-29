@@ -1,6 +1,6 @@
-package br.com.achievehunter.model;
+package br.com.achievehunter.model.steam;
 
-public class SteamAchievement {
+public class GameAchievement {
 
 	private String name;
 	private Integer defaultvalue;
