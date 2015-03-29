@@ -2,8 +2,6 @@ package br.com.achievehunter.model.steam;
 
 import java.util.List;
 
-import org.springframework.beans.factory.InitializingBean;
-
 public class Game {
 
 	private Integer appId;
