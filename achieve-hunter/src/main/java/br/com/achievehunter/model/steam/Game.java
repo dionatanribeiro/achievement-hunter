@@ -10,7 +10,9 @@ public class Game {
 	private String name;
 	private String shortName;
 	private String logoUrl;
-	private List<GameAchievement> achievements;
+	private String logoThumbnailUrl;
+	private String iconUrl;
+	private List<Achievement> achievements;
 	
 	public Game() {}
 	
@@ -53,11 +55,27 @@ public class Game {
 		this.logoUrl = logoUrl;
 	}
 	
-	public List<GameAchievement> getAchievements() {
+	public String getLogoThumbnailUrl() {
+		return logoThumbnailUrl;
+	}
+
+	public void setLogoThumbnailUrl(String logoThumbnailUrl) {
+		this.logoThumbnailUrl = logoThumbnailUrl;
+	}
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
+	}
+
+	public List<Achievement> getAchievements() {
 		return achievements;
 	}
 
-	public void setAchievements(List<GameAchievement> achievements) {
+	public void setAchievements(List<Achievement> achievements) {
 		this.achievements = achievements;
 	}
 
