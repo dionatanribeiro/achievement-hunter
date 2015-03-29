@@ -2,8 +2,8 @@ package br.com.achievehunter.core.steam;
 
 import java.util.List;
 
-import br.com.achievehunter.model.SteamGame;
-import br.com.achievehunter.model.SteamProfile;
+import br.com.achievehunter.model.steam.Game;
+import br.com.achievehunter.model.steam.Profile;
 
 public class SteamProfileBuilder {
 
@@ -13,7 +13,13 @@ public class SteamProfileBuilder {
 	private String avatarUrl;
 	private String avatarMediumUrl;
 	private String avatarFullUrl;
-	private List<SteamGame> listaGames;
+	private List<Game> listaGames;
+	
+	private SteamProfileBuilder() {};
+	
+	public static SteamProfileBuilder builder() {
+		return new SteamProfileBuilder();
+	}
 	
 	public SteamProfileBuilder withSteamId(Long steamId) {
 		this.steamId = steamId;
@@ -45,16 +51,16 @@ public class SteamProfileBuilder {
 		return this;
 	}
 	
-	public SteamProfileBuilder withGames(List<SteamGame> listaGames) {
+	public SteamProfileBuilder withGames(List<Game> listaGames) {
 		this.listaGames = listaGames;
 		return this;
 	}
 	
-	public SteamProfile build() {
-		SteamProfile profile = new SteamProfile();
+	public Profile build() {
+		Profile profile = new Profile();
 		profile.setSteamId(this.steamId);
-		profile.setNickname(this.nickName);
-		profile.setRealname(this.realName);
+		profile.setNickName(this.nickName);
+		profile.setRealName(this.realName);
 		profile.setAvatar(this.avatarUrl);
 		profile.setAvatarMedium(this.avatarMediumUrl);
 		profile.setAvatarFull(this.avatarFullUrl);
