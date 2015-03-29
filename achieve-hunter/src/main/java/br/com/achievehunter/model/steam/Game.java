@@ -14,10 +14,9 @@ public class Game {
 	
 	public Game() {}
 	
-	public Game(Integer appId, String name, String shortName, String logoUrl) {
+	public Game(Integer appId, String name, String logoUrl) {
 		this.appId = appId;
 		this.name = name;
-		this.shortName = shortName;
 		this.logoUrl = logoUrl;
 	}
 

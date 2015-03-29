@@ -22,7 +22,6 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 			List<Game> listaGames = new ArrayList<>();
 			usuario.getGames().forEach((gameKey, game) -> listaGames.add(new Game(game.getAppId()
 																				, game.getName()
-																				, game.getShortName()
 																				, game.getLogoUrl())));
 			steamProfile = SteamProfileBuilder.builder().withSteamId(usuario.getSteamId64())
 														.withRealName(usuario.getRealName())
@@ -44,7 +43,7 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 	}
 
 	@Override
-	public Game findGameByUser(Long steamUserId, Integer appId) {
+	public Game findGameByUserIdAndGameId(Long steamUserId, Integer appId) {
 		return SteamCompenserUtils.loadGame(steamUserId, appId);
 	}
 	
