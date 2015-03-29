@@ -1,10 +1,10 @@
 package br.com.achievehunter.core.steam;
 
-import br.com.achievehunter.model.SteamProfile;
+import br.com.achievehunter.model.steam.Profile;
 
 public interface SteamCompenserFacade {
 	
-	SteamProfile findSteamProfileBySteamId64(long steamId);
-	SteamProfile findSteamProfileByNickName(String nickName);
+	Profile findSteamProfileBySteamId64(long steamId);
+	Profile findSteamProfileByNickName(String nickName);
 	
 }

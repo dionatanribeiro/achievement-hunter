@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.achievehunter.core.steam.SteamCompenserFacade;
-import br.com.achievehunter.model.SteamProfile;
+import br.com.achievehunter.model.steam.Profile;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
@@ -22,7 +22,7 @@ public class SteamController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/load-steam-profile/{steamId}", method = RequestMethod.GET)
-	public SteamProfile loadSteamProfile(@PathVariable("steamId") long steamId, Model model) throws SteamCondenserException {
+	public Profile loadSteamProfile(@PathVariable("steamId") long steamId, Model model) throws SteamCondenserException {
 		return steamFacade.findSteamProfileBySteamId64(steamId);
 	}
 	
