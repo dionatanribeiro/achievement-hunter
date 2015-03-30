@@ -12,7 +12,6 @@ import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
-import com.github.koraktor.steamcondenser.steam.community.GameStats;
 import com.google.common.base.Strings;
 
 public class SteamCompenserUtilsTest {
@@ -35,6 +34,7 @@ public class SteamCompenserUtilsTest {
 		//Arrange
 		Long steamUserId = 76561198003170021L;
 		Integer darkSoulsId = 211420;
+		
 		GameStats stats = SteamCompenserUtils.getGameStats(steamUserId, darkSoulsId);
 		
 		//Act

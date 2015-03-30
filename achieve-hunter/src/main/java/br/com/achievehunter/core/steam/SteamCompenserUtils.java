@@ -1,15 +1,15 @@
 package br.com.achievehunter.core.steam;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
+import br.com.achievehunter.core.utils.LocalDateTimeUtils;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameAchievement;
-import com.github.koraktor.steamcondenser.steam.community.GameStats;
 import com.github.koraktor.steamcondenser.steam.community.SteamGame;
 import com.google.common.annotations.VisibleForTesting;
 
@@ -17,7 +17,7 @@ public abstract class SteamCompenserUtils {
 
 	@VisibleForTesting
 	public static GameStats getGameStats(Long steamUserId, Integer gameId) throws SteamCondenserException {
-        return GameStats.createGameStats(steamUserId, String.valueOf(gameId));
+        return GameStats.createGameStats(steamUserId, gameId);
     }
 	
 	@VisibleForTesting
@@ -30,7 +30,7 @@ public abstract class SteamCompenserUtils {
 			achievement.setDescription(compenserAchievement.getDescription());
 			achievement.setIconLockedUrl(compenserAchievement.getIconOpenURL());
 			achievement.setIconUnlockedUrl(compenserAchievement.getIconClosedURL());
-			achievement.setDateUnlocked(compenserAchievement.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+			achievement.setDateUnlocked(LocalDateTimeUtils.dateToLocalDateTime(compenserAchievement.getTimestamp()));
 			achievement.setAchieved(compenserAchievement.isUnlocked());
 			achievementList.add(achievement);
 		}
