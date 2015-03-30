@@ -29,7 +29,7 @@ public class SteamController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/load-steam-game/{steamId}/{appId}", method = RequestMethod.GET)
-	public Game loadGameByUser(@PathVariable("steamId") Long steamId, @PathVariable("steamId") Integer appId, Model model) throws SteamCondenserException {
+	public Game loadGameByUser(@PathVariable("steamId") Long steamId, @PathVariable("appId") Integer appId) throws SteamCondenserException {
 		return steamFacade.findGameByUserIdAndGameId(steamId, appId);
 	}
 	
