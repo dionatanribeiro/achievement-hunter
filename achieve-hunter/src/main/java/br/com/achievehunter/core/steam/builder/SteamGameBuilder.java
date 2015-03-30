@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam;
+package br.com.achievehunter.core.steam.builder;
 
 import java.util.List;
 
