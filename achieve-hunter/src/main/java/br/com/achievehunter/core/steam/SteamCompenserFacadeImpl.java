@@ -2,9 +2,12 @@ package br.com.achievehunter.core.steam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
+import br.com.achievehunter.core.steam.builder.SteamProfileBuilder;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
@@ -19,22 +22,29 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 		Profile steamProfile = null;
 		try {
 			SteamId usuario = SteamId.create(steamId);
-			List<Game> listaGames = new ArrayList<>();
-			usuario.getGames().forEach((gameKey, game) -> listaGames.add(new Game(game.getAppId()
-																				, game.getName()
-																				, game.getLogoUrl())));
+			List<Game> gameList = new ArrayList<>();
+			usuario.getGames().forEach((gameKey, game) -> gameList.add(SteamGameBuilder.builder().withAppId(game.getAppId())
+																								 .withName(game.getName())
+																								 .withShortName(game.getShortName())
+																								 .withLogoUrl(game.getLogoUrl())
+																								 .build()));
+			List<Game> gamesWithAchievements = gameList.stream().filter(game -> isGameHasAchievements(game)).collect(Collectors.toList());
 			steamProfile = SteamProfileBuilder.builder().withSteamId(usuario.getSteamId64())
 														.withRealName(usuario.getRealName())
 														.withNickName(usuario.getNickname())
 														.withAvatarUrl(usuario.getAvatarIconUrl())
 														.withAvatarMediumUrl(usuario.getAvatarMediumUrl())
 														.withAvatarFullUrl(usuario.getAvatarFullUrl())
-														.withGames(listaGames)
+														.withGames(gamesWithAchievements)
 														.build();
 		} catch (SteamCondenserException e) {
 			e.printStackTrace();
 		}
 		return steamProfile;
+	}
+
+	private boolean isGameHasAchievements(Game game) {
+		return game.getShortName() != null;
 	}
 
 	@Override
