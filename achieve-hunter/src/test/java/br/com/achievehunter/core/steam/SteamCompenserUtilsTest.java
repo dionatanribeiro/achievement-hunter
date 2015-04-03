@@ -59,4 +59,20 @@ public class SteamCompenserUtilsTest {
 		assertThat("Deve encontrar a lista de achievements do jogo", darkSouls.getAchievements().isEmpty(), is(false));
 	}
 	
+	@Test
+	public void verificaSeIconeDoAchievementFoiRetornado() {
+		//Arrange
+		Long steamUserId = 76561198003170021L;
+		Integer darkSoulsId = 211420;
+		
+		//Act
+		Game darkSouls = SteamCompenserUtils.loadGame(steamUserId, darkSoulsId);
+		
+		//Assert
+		boolean iconesPreenchidos = darkSouls.getAchievements().stream().allMatch(a -> !Strings.isNullOrEmpty(a.getIcon()));
+		assertThat("Todos os icones de achievements devem estar preenchidos", iconesPreenchidos, is(true));
+	}
+	
+	
+	
 }

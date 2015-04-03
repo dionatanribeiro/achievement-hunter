@@ -65,4 +65,22 @@ function ViewModel() {
 
 };
 
+ko.bindingHandlers.dateTime = {
+	/*init: function (element, valueAccessor) {
+
+	},*/
+	update: function (element, valueAccessor) {
+		var dateTime = valueAccessor();
+		dateTime = ko.utils.unwrapObservable(dateTime);
+
+		console.log('element: ', element);
+		console.log('valueAccessor(): ', valueAccessor());
+		console.log('val: ', dateTime);
+		if (dateTime) {
+			var dateFormat = new Date(dateTime.year, dateTime.monthValue, dateTime.dayOfMonth, dateTime.hour, dateTime.minute, dateTime.second);
+			$(element).text(dateFormat);
+		}
+	}
+};
+
 ko.applyBindings(new ViewModel());

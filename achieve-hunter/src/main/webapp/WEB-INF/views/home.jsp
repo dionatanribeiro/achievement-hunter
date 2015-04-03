@@ -5,9 +5,6 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 </head>
 <body>
-	<h3>Mensagem: ${message}</h3>
-	<h3 data-bind="text: helloKnockoutjs"></h3>
-	
 	<label>Digite o id do usuário</label>
 	<input id="idProfileSteam" type="text" data-bind="value: steamId">
 	<button id="btnSearhProfile" data-bind="click: loadSteamProfile">Pesquisar</button>
@@ -15,7 +12,7 @@
 	<div id="steamUserData" data-bind="visible: dados.steamId">
 		<label id="realName" data-bind="text: dados.realName"></label>
 		<label id="nickName" data-bind="text: dados.nickName"></label>
-		<img id="avatar" data-bind="attr: {src: dados.avatar}">
+		<img id="avatar" data-bind="attr: {src: dados.avatarMedium}">
 		<select name="gameList" data-bind="options: gamesCombo,
 										   value: gameSelecionado,
 										   optionsText: 'name',
@@ -46,10 +43,10 @@
 			</thead>
 			<tbody data-bind="foreach: game.achievements">
 				<tr>
-					<td><img data-bind="attr: { src: iconUnlockedUrl }"></td>
+					<td><img data-bind="attr: { src: icon }"></td>
 					<td data-bind="text: name"></td>
 					<td data-bind="text: description"></td>
-					<td data-bind="text: dateUnlocked"></td>
+					<td data-bind="text: date"></td>
 				</tr>
 			</tbody>
 		</table>

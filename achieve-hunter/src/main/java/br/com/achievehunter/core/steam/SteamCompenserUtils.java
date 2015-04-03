@@ -20,23 +20,6 @@ public abstract class SteamCompenserUtils {
         return GameStats.createGameStats(steamUserId, gameId);
     }
 	
-	@VisibleForTesting
-	public static List<Achievement> getAchievementsByGameStats(GameStats stats) throws SteamCondenserException {
-		ArrayList<GameAchievement> steamCompenserAchievements = stats.getAchievements();
-		List<Achievement> achievementList = new ArrayList<>();
-		for (GameAchievement compenserAchievement : steamCompenserAchievements) {
-			Achievement achievement = new Achievement();
-			achievement.setName(compenserAchievement.getName());
-			achievement.setDescription(compenserAchievement.getDescription());
-			achievement.setIconLockedUrl(compenserAchievement.getIconOpenURL());
-			achievement.setIconUnlockedUrl(compenserAchievement.getIconClosedURL());
-			achievement.setDateUnlocked(LocalDateTimeUtils.dateToLocalDateTime(compenserAchievement.getTimestamp()));
-			achievement.setAchieved(compenserAchievement.isUnlocked());
-			achievementList.add(achievement);
-		}
-		return achievementList;
-	}
-	
 	public static Game loadGame(Long steamUserId, Integer appId) {
 		Game game = null;
 		try {
@@ -54,6 +37,23 @@ public abstract class SteamCompenserUtils {
 			System.out.println(e.getMessage().toString());
 		}
 		return game;
+	}
+	
+	@VisibleForTesting
+	public static List<Achievement> getAchievementsByGameStats(GameStats stats) throws SteamCondenserException {
+		ArrayList<GameAchievement> steamCompenserAchievements = stats.getAchievements();
+		List<Achievement> achievementList = new ArrayList<>();
+		for (GameAchievement compenserAchievement : steamCompenserAchievements) {
+			Achievement achievement = new Achievement();
+			achievement.setName(compenserAchievement.getName());
+			achievement.setDescription(compenserAchievement.getDescription());
+			achievement.setIconLockedUrl(compenserAchievement.getIconOpenURL());
+			achievement.setIconUnlockedUrl(compenserAchievement.getIconClosedURL());
+			achievement.setDateUnlocked(LocalDateTimeUtils.dateToLocalDateTime(compenserAchievement.getTimestamp()));
+			achievement.setAchieved(compenserAchievement.isUnlocked());
+			achievementList.add(achievement);
+		}
+		return achievementList;
 	}
 	
 }

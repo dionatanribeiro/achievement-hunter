@@ -23,7 +23,17 @@ function getFriendList(steamApiKey, steamUserId) {
   	});
 };
 
-// Retorna achievements conquistados pelo usuário a partir do id do jogo
+//Retorna lista de dados dos achievements por jogo
+function getSchemaForGame(steamApiKey, gameId) {
+	var url = mainUrl + 'ISteamUserStats/GetSchemaForGame/v2/?key=' + steamApiKey + '&appid=' + gameId;
+	$.getJSON(url, function(data){
+    	console.log("data: ", data);
+	}).done(function() {
+    	console.log("success");
+  	});
+}
+
+// Retorna status dos achievements pelo usuário a partir do id do jogo
 function getPlayerAchievementsByGame(steamApiKey, steamUserId, gameId) {
 	var url = mainUrl + 'ISteamUserStats/GetPlayerAchievements/v0001/?appid=' + gameId + '&key=' + steamApiKey + '&steamid=' + steamUserId;
 	$.getJSON(url, function(data){
@@ -36,6 +46,16 @@ function getPlayerAchievementsByGame(steamApiKey, steamUserId, gameId) {
 // Retorna lista de jogos do usuario
 function getOwnedGames(steamApiKey, steamUserId) {
 	var url = mainUrl + 'IPlayerService/GetOwnedGames/v0001/?key=' + steamApiKey + '&steamid=' + steamUserId + '&format=json';
+	$.getJSON(url, function(data){
+    	console.log("data: ", data);
+	}).done(function() {
+    	console.log("success");
+  	});
+};
+
+// Retorna lista que informa status de desbloqueio de achievements por jogo
+function getUserStatsForGame(steamApiKey, steamUserId, gameId) {
+	var url = mainUrl + 'ISteamUserStats/GetUserStatsForGame/v0002/?appid=' + gameId + '&key=' + steamApiKey + '&steamid=' + steamUserId;
 	$.getJSON(url, function(data){
     	console.log("data: ", data);
 	}).done(function() {
