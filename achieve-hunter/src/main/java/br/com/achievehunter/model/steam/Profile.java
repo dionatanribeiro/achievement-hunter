@@ -2,9 +2,14 @@ package br.com.achievehunter.model.steam;
 
 import java.util.List;
 
-public class Profile {
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+public class Profile {
+	
+	@JsonSerialize(using=ToStringSerializer.class)
 	private Long steamId;
+	
 	private String nickName;
 	private String realName;
 	private String avatar;
