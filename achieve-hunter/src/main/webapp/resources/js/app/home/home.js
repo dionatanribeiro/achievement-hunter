@@ -21,18 +21,15 @@ function ViewModel() {
 		achievements : ko.observableArray([])
 	}
 
-	self.steamId = ko.observable();
+	self.steamIdInformado = ko.observable();
 	
 	self.gamesCombo = ko.observableArray([]);
 
 	self.gameSelecionado = ko.observable();
 
-	self.dateTeste = ko.observable();
-
-	self.helloKnockoutjs = ko.observable("Hello Knockoutjs!");
-	
 	self.loadSteamProfile = function() {
-		$.getJSON('/achieve-hunter/load-steam-profile/' + self.steamId(), function(data) {
+		$("#ajaxLoader").show();
+		$.getJSON('/achieve-hunter/load-steam-profile/' + self.steamIdInformado(), function(data) {
 			console.log("profile: ", data);
 			self.dados.steamId(data.steamId);
 			self.dados.realName(data.realName);
@@ -41,13 +38,16 @@ function ViewModel() {
 			self.dados.avatarFull(data.avatarFull);
 			self.dados.avatarMedium(data.avatarMedium);
 			self.dados.games(data.games);
-			self.dateTeste(data.dataTeste);
 			self.gamesCombo(data.games);
+		}).done(function() {
+			$("#ajaxLoader").hide();
 		});
 	}
 
 	self.loadGame = function() {
-		$.getJSON('/achieve-hunter/load-steam-game/' + self.steamId() + '/' + self.gameSelecionado(), function(data) {
+		$("#ajaxLoader").show();
+		alert(self.dados.steamId());
+		$.getJSON('/achieve-hunter/load-steam-game/' + self.dados.steamId() + '/' + self.gameSelecionado(), function(data) {
 			console.log("game: ", data);
 			self.game.appId(data.appId);
 			self.game.name(data.name);
@@ -56,11 +56,9 @@ function ViewModel() {
 			self.game.logoThumbnailUrl(data.logoThumbnailUrl);
 			self.game.iconUrl(data.iconUrl);
 			self.game.achievements(data.achievements);
+		}).done(function() {
+			$("#ajaxLoader").hide();
 		});
-	}
-
-	self.getAchievementIcon = function() {
-
 	}
 
 };

@@ -3,12 +3,24 @@
 <head>
 	<!-- 	{{>/WEB-INF/includes/essentials.jsp}} -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajaxLoad.css" />
 </head>
 <body>
-	<label>Digite o id do usuário</label>
-	<input id="idProfileSteam" type="text" data-bind="value: steamId">
-	<button id="btnSearhProfile" data-bind="click: loadSteamProfile">Pesquisar</button>
 	
+	<div id="ajaxLoader" class="loader" data-bind="visible: false">
+	   <center class="loading-image">
+	       <i class="fa fa-cog fa-spin"></i>
+	   </center>
+	</div>
+
+	<label>Digite o id do usuário</label>
+	<input id="idProfileSteam" type="text" data-bind="value: steamIdInformado">
+	<button id="btnSearhProfile" class="btn-default" data-bind="click: loadSteamProfile">
+		<i class="fa fa-steam-square"></i>
+		Pesquisar
+	</button>
+
 	<div id="steamUserData" data-bind="visible: dados.steamId">
 		<label id="realName" data-bind="text: dados.realName"></label>
 		<label id="nickName" data-bind="text: dados.nickName"></label>
@@ -17,11 +29,12 @@
 										   value: gameSelecionado,
 										   optionsText: 'name',
 										   optionsValue: 'appId',
-										   optionsCaption: 'Selecione...'
-										   ">
-
+										   optionsCaption: 'Selecione...'">
 		</select>
-		<button id="btnSearhGame" data-bind="click: loadGame">Pesquisar</button>
+		<button id="btnSearhGame" class="btn-default" data-bind="click: loadGame">
+			<i class="fa fa-steam-square"></i>
+			Pesquisar
+		</button>
 	</div>
 	
 	<br>
