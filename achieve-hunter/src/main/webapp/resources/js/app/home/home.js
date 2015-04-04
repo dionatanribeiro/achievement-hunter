@@ -46,7 +46,6 @@ function ViewModel() {
 
 	self.loadGame = function() {
 		$("#ajaxLoader").show();
-		alert(self.dados.steamId());
 		$.getJSON('/achieve-hunter/load-steam-game/' + self.dados.steamId() + '/' + self.gameSelecionado(), function(data) {
 			console.log("game: ", data);
 			self.game.appId(data.appId);
