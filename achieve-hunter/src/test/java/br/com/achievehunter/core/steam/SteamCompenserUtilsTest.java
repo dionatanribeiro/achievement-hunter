@@ -23,7 +23,7 @@ public class SteamCompenserUtilsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		GameStats gameStats = SteamCompenserUtils.getGameStats(steamUserId, darkSoulsId);
+		GameStats gameStats = GameStats.createGameStats(steamUserId, darkSoulsId);
 		
 		//Assert
 		assertThat("Dados do jogo não podem ser nulos", gameStats, notNullValue());
@@ -34,8 +34,7 @@ public class SteamCompenserUtilsTest {
 		//Arrange
 		Long steamUserId = 76561198003170021L;
 		Integer darkSoulsId = 211420;
-		
-		GameStats stats = SteamCompenserUtils.getGameStats(steamUserId, darkSoulsId);
+		GameStats stats = GameStats.createGameStats(steamUserId, darkSoulsId);
 		
 		//Act
 		List<Achievement> achievementList = SteamCompenserUtils.getAchievementsByGameStats(stats);

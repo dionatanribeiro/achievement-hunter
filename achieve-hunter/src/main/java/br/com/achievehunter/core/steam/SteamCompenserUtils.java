@@ -3,8 +3,9 @@ package br.com.achievehunter.core.steam;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.achievehunter.core.utils.LocalDateTimeUtils.dateToLocalDateTime;
+
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
-import br.com.achievehunter.core.utils.LocalDateTimeUtils;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
@@ -15,23 +16,18 @@ import com.google.common.annotations.VisibleForTesting;
 
 public abstract class SteamCompenserUtils {
 
-	@VisibleForTesting
-	public static GameStats getGameStats(Long steamUserId, Integer gameId) throws SteamCondenserException {
-        return GameStats.createGameStats(steamUserId, gameId);
-    }
-	
 	public static Game loadGame(Long steamUserId, Integer appId) {
 		Game game = null;
 		try {
-			GameStats gameStats = getGameStats(steamUserId, appId);
-			SteamGame steamCompenserGame = gameStats.getGame();
+			GameStats gameStatsByPlayer = GameStats.createGameStats(steamUserId, appId);
+			SteamGame steamCompenserGame = gameStatsByPlayer.getGame();
 			game = SteamGameBuilder.builder().withAppId(steamCompenserGame.getAppId())
 											 .withName(steamCompenserGame.getName())
 											 .withShortName(steamCompenserGame.getShortName())
 											 .withLogoUrl(steamCompenserGame.getLogoUrl())
 											 .withLogoThumbnailUrl(steamCompenserGame.getLogoThumbnailUrl())
 											 .withIconUrl(steamCompenserGame.getIconUrl())
-											 .withAchievements(getAchievementsByGameStats(gameStats))
+											 .withAchievements(getAchievementsByGameStats(gameStatsByPlayer))
 											 .build();
 		} catch (SteamCondenserException e) {
 			System.out.println(e.getMessage().toString());
@@ -49,7 +45,7 @@ public abstract class SteamCompenserUtils {
 			achievement.setDescription(compenserAchievement.getDescription());
 			achievement.setIconLockedUrl(compenserAchievement.getIconOpenURL());
 			achievement.setIconUnlockedUrl(compenserAchievement.getIconClosedURL());
-			achievement.setDateUnlocked(LocalDateTimeUtils.dateToLocalDateTime(compenserAchievement.getTimestamp()));
+			achievement.setDateUnlocked(dateToLocalDateTime(compenserAchievement.getTimestamp()));
 			achievement.setAchieved(compenserAchievement.isUnlocked());
 			achievementList.add(achievement);
 		}
