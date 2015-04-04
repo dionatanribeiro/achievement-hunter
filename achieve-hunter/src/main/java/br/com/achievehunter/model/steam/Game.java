@@ -75,5 +75,9 @@ public class Game {
 	public void setAchievements(List<Achievement> achievements) {
 		this.achievements = achievements;
 	}
-
+	
+	public boolean isHasAchievements() {
+		return this.shortName != null;
+	}
+	
 }

@@ -28,23 +28,21 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 																								 .withShortName(game.getShortName())
 																								 .withLogoUrl(game.getLogoUrl())
 																								 .build()));
-			List<Game> gamesWithAchievements = gameList.stream().filter(game -> isGameHasAchievements(game)).collect(Collectors.toList());
+			List<Game> gamesWithAchievementsOrdened = gameList.stream().filter(game -> game.isHasAchievements())
+																	   .sorted((g1, g2) -> g1.getName().compareTo(g2.getName()))											
+																	   .collect(Collectors.toList());
 			steamProfile = SteamProfileBuilder.builder().withSteamId(usuario.getSteamId64())
 														.withRealName(usuario.getRealName())
 														.withNickName(usuario.getNickname())
 														.withAvatarUrl(usuario.getAvatarIconUrl())
 														.withAvatarMediumUrl(usuario.getAvatarMediumUrl())
 														.withAvatarFullUrl(usuario.getAvatarFullUrl())
-														.withGames(gamesWithAchievements)
+														.withGames(gamesWithAchievementsOrdened)
 														.build();
 		} catch (SteamCondenserException e) {
 			e.printStackTrace();
 		}
 		return steamProfile;
-	}
-
-	private boolean isGameHasAchievements(Game game) {
-		return game.getShortName() != null;
 	}
 
 	@Override

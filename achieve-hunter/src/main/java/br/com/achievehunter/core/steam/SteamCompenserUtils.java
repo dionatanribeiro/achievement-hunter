@@ -1,10 +1,11 @@
 package br.com.achievehunter.core.steam;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.com.achievehunter.core.utils.LocalDateTimeUtils.dateToLocalDateTime;
-
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
@@ -37,10 +38,11 @@ public abstract class SteamCompenserUtils {
 	
 	@VisibleForTesting
 	public static List<Achievement> getAchievementsByGameStats(GameStats stats) throws SteamCondenserException {
-		ArrayList<GameAchievement> steamCompenserAchievements = stats.getAchievements();
+		List<GameAchievement> steamCompenserAchievements = stats.getAchievements();
 		List<Achievement> achievementList = new ArrayList<>();
 		for (GameAchievement compenserAchievement : steamCompenserAchievements) {
 			Achievement achievement = new Achievement();
+			achievement.setApiName(compenserAchievement.getApiName());
 			achievement.setName(compenserAchievement.getName());
 			achievement.setDescription(compenserAchievement.getDescription());
 			achievement.setIconLockedUrl(compenserAchievement.getIconOpenURL());
@@ -49,7 +51,23 @@ public abstract class SteamCompenserUtils {
 			achievement.setAchieved(compenserAchievement.isUnlocked());
 			achievementList.add(achievement);
 		}
-		return achievementList;
+		return ordenarPorDesbloqueioENome(achievementList);
+	}
+
+	@VisibleForTesting
+	public static List<Achievement> ordenarPorDesbloqueioENome(List<Achievement> achievementList) {
+		Comparator<Achievement> achievementMaisRecente = (a1, a2) -> a1.getDateUnlocked().compareTo(a2.getDateUnlocked());
+		List<Achievement> achievementsDesbloqueados = achievementList.stream().filter(a -> a.isAchieved())
+				.sorted(achievementMaisRecente.reversed())
+				.collect(Collectors.toList());
+		Comparator<Achievement> ordenarAlfabeticamente = (a1, a2) -> a1.getApiName().compareTo(a2.getApiName());
+		List<Achievement> achievementsBloqueados = achievementList.stream().filter(a -> !a.isAchieved())
+				.sorted(ordenarAlfabeticamente)
+				.collect(Collectors.toList());
+		List<Achievement> achievements = new ArrayList<>();
+		achievements.addAll(achievementsDesbloqueados);
+		achievements.addAll(achievementsBloqueados);
+		return achievements;
 	}
 	
 }

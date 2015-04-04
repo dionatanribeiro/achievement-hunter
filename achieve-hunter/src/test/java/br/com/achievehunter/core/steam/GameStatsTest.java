@@ -1,15 +1,12 @@
 package br.com.achievehunter.core.steam;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameAchievement;
 
-import br.com.achievehunter.model.steam.Game;
-import br.com.achievehunter.model.steam.Profile;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -37,7 +34,7 @@ public class GameStatsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		ArrayList<GameAchievement> achievements = GameStats.createGameStats(steamUserId, darkSoulsId).getAchievements();
+		List<GameAchievement> achievements = GameStats.createGameStats(steamUserId, darkSoulsId).getAchievements();
 		
 		//Assert
 		assertThat("Lista de achievements não pode ser vazia", achievements.isEmpty(), is(false));
@@ -50,7 +47,7 @@ public class GameStatsTest {
 		Integer fm2012Id = 71270;
 		
 		//Act
-		ArrayList<GameAchievement> achievements = GameStats.createGameStats(steamUserId, fm2012Id).getAchievements();
+		List<GameAchievement> achievements = GameStats.createGameStats(steamUserId, fm2012Id).getAchievements();
 		
 		//Assert
 		assertThat("Lista de achievements não pode ser vazia", achievements.isEmpty(), is(false));

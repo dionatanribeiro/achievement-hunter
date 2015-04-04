@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+	<meta charset="ISO-8859-1">
+	<title>Achievement Hunter</title>
+
 	<!-- 	{{>/WEB-INF/includes/essentials.jsp}} -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" />

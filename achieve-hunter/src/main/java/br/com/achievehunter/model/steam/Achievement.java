@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Achievement {
 
+	private String apiName;
 	private String name;
 	private String description;
 	private Integer hidden;
@@ -21,6 +22,14 @@ public class Achievement {
 	
 	@JsonIgnore
 	private String iconLockedUrl;
+
+	public String getApiName() {
+		return apiName;
+	}
+
+	public void setApiName(String apiName) {
+		this.apiName = apiName;
+	}
 
 	public String getName() {
 		return name;

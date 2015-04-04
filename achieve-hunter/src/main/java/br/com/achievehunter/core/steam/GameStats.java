@@ -1,6 +1,7 @@
 package br.com.achievehunter.core.steam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,7 +14,8 @@ import com.github.koraktor.steamcondenser.steam.community.XMLData;
 public class GameStats {
 
 	protected XMLData xmlData;
-	private ArrayList<GameAchievement> achievements;
+	private List<GameAchievement> achievements;
+	
 	protected SteamGame game;
 
     protected String hoursPlayed;
@@ -56,7 +58,7 @@ public class GameStats {
      * 
      * @return Todos os Achievements pertencentes ao jogo
      */
-    public ArrayList<GameAchievement> getAchievements() {
+    public List<GameAchievement> getAchievements() {
         if(this.achievements == null) {
             this.achievements = new ArrayList<GameAchievement>();
             for(XMLData achievementData : this.xmlData.getElements("achievements", "achievement")) {
@@ -76,6 +78,15 @@ public class GameStats {
      */
     public SteamGame getGame() {
         return this.game;
+    }
+    
+    /**
+     * Retorna o número de horas jogadas pelo jogador nas últimas 2 semanas
+     *
+     * @return número de horas jogadas
+     */
+    public String getHoursPlayed() {
+        return this.hoursPlayed;
     }
     
     /**
