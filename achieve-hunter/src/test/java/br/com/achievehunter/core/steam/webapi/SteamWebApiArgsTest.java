@@ -3,6 +3,8 @@ package br.com.achievehunter.core.steam.webapi;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.google.common.base.Strings;
@@ -16,6 +18,15 @@ public class SteamWebApiArgsTest {
 		
 		//Assert
 		assertThat("Parametros retornados não devem ser nulos ou vazios", !Strings.isNullOrEmpty(parametros), is(true));
+	}
+	
+	@Test
+	public void verificaQuandoMontaParametrosComListaDeSteamIds() {
+		//Act
+		String parametros = SteamWebApiArgs.createParam().addSteamIds(Arrays.asList(123L, 456L, 789L)).getArgs();
+		
+		//Assert
+		assertThat("Parametro deve conter vírgula", parametros.contains(","), is(true));
 	}
 	
 }

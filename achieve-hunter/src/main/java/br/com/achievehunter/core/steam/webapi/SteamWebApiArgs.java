@@ -1,6 +1,7 @@
 package br.com.achievehunter.core.steam.webapi;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SteamWebApiArgs {
@@ -21,6 +22,21 @@ public class SteamWebApiArgs {
 	
 	public SteamWebApiArgs addSteamId(Long steamId) {
 		args.put("steamid", steamId.toString());
+		return this;
+	}
+	
+	public SteamWebApiArgs addSteamIds(List<Long> steamIds) {
+		String ids = "";
+		boolean first = true;
+		for (Long id : steamIds) {
+			if (first) {
+				first = false;
+			} else {
+				ids += ",";
+			}
+			ids += id;
+		}
+		args.put("steamids", ids);
 		return this;
 	}
 	

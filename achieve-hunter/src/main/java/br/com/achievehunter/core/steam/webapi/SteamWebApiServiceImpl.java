@@ -2,6 +2,7 @@ package br.com.achievehunter.core.steam.webapi;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,10 +26,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 		StringBuilder url = new StringBuilder();
 		url.append(SteamWebApi.BASE_URL.getMessage());
 		url.append(SteamWebApi.PROFILE.getMessage());
-		url.append("?");
-		url.append("key=" + SteamWebApi.API_KEY.getMessage());
-		url.append("&");
-		url.append("steamids=" + steamId);
+		url.append(SteamWebApiArgs.createParam().addApiKey().addSteamIds(Arrays.asList(steamId)).getArgs());
 		
 		//Pesquisar com +1 steamId
 		//http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=4869861D43428379308A740BCD9B276D&steamids=76561198003170021,76561198012078770
@@ -71,11 +69,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 		StringBuilder url = new StringBuilder();
 		url.append(SteamWebApi.BASE_URL.getMessage());
 		url.append(SteamWebApi.FRIEND_LIST.getMessage());
-		url.append("?");
-		url.append("key=" + SteamWebApi.API_KEY.getMessage());
-		url.append("&");
-		url.append("steamid=" + steamId);
-		url.append("&relationship=friend");
+		url.append(SteamWebApiArgs.createParam().addApiKey().addSteamId(steamId).addFormatJson().getArgs());
 
 		try {
 			JsonNode rootNode = mapper.readTree(ReadURL.read(url.toString()));
