@@ -10,6 +10,8 @@ public class SteamProfileBuilder {
 	private Long steamId;
 	private String nickName;
 	private String realName;
+	private String resumo;
+	private String endereco;
 	private String avatarUrl;
 	private String avatarMediumUrl;
 	private String avatarFullUrl;
@@ -36,6 +38,16 @@ public class SteamProfileBuilder {
 		return this;
 	}
 	
+	public SteamProfileBuilder withResumo(String resumo) {
+		this.resumo = resumo;
+		return this;
+	}
+	
+	public SteamProfileBuilder withEndereco(String endereco) {
+		this.endereco = endereco;
+		return this;
+	}
+
 	public SteamProfileBuilder withAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
 		return this;
@@ -61,6 +73,8 @@ public class SteamProfileBuilder {
 		profile.setSteamId(this.steamId);
 		profile.setNickName(this.nickName);
 		profile.setRealName(this.realName);
+		profile.setResumo(this.resumo);
+		profile.setEndereco(this.endereco);
 		profile.setAvatar(this.avatarUrl);
 		profile.setAvatarMedium(this.avatarMediumUrl);
 		profile.setAvatarFull(this.avatarFullUrl);

@@ -5,6 +5,8 @@ function ViewModel() {
 		steamId : ko.observable(),
 		realName : ko.observable(),
 		nickName : ko.observable(),
+		resumo : ko.observable(),
+		endereco : ko.observable(),
 		avatar : ko.observable(),
 		avatarFull : ko.observable(),
 		avatarMedium : ko.observable(),
@@ -34,6 +36,8 @@ function ViewModel() {
 			self.dados.steamId(data.steamId);
 			self.dados.realName(data.realName);
 			self.dados.nickName(data.nickName);
+			self.dados.resumo(data.resumo);
+			self.dados.nickName(data.endereco);
 			self.dados.avatar(data.avatar);
 			self.dados.avatarFull(data.avatarFull);
 			self.dados.avatarMedium(data.avatarMedium);

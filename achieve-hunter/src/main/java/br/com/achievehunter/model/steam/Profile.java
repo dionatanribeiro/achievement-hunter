@@ -12,6 +12,8 @@ public class Profile {
 	
 	private String nickName;
 	private String realName;
+	private String resumo;
+	private String endereco;
 	private String avatar;
 	private String avatarMedium;
 	private String avatarFull;
@@ -43,6 +45,22 @@ public class Profile {
 
 	public String getAvatar() {
 		return avatar;
+	}
+
+	public String getResumo() {
+		return resumo;
+	}
+
+	public void setResumo(String resumo) {
+		this.resumo = resumo;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
 	public void setAvatar(String avatar) {
