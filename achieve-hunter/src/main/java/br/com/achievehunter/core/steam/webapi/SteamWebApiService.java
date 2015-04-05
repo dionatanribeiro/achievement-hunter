@@ -7,6 +7,6 @@ import br.com.achievehunter.model.steam.Profile;
 public interface SteamWebApiService {
 	
 	Profile findProfileBySteamId(Long steamId);
-	List<Long> findFriendsBySteamId(Long steamId);
+	List<Profile> findFriendsBySteamId(Long steamId);
 	
 }

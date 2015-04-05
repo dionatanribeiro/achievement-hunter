@@ -40,7 +40,7 @@ private SteamWebApiService service;
 		long steamId = 76561198003170021L;
 		
 		//Act
-		List<Long> friendsList = service.findFriendsBySteamId(steamId);
+		List<Profile> friendsList = service.findFriendsBySteamId(steamId);
 		
 		//Assert
 		assertThat("Deve encontrar a lista de amigos do jogador", friendsList.isEmpty(), is(false));

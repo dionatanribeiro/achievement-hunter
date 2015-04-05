@@ -22,15 +22,45 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 	
 	@Override
 	public Profile findProfileBySteamId(Long steamId) {
-		
 		StringBuilder url = new StringBuilder();
 		url.append(SteamWebApi.BASE_URL.getMessage());
 		url.append(SteamWebApi.PROFILE.getMessage());
 		url.append(SteamWebApiArgs.createParam().addApiKey().addSteamIds(Arrays.asList(steamId)).getArgs());
+		return readProfileJson(url).stream().findFirst().get();
+	}
+
+	@Override
+	public List<Profile> findFriendsBySteamId(Long steamId) {
+		List<Profile> friends = new ArrayList<>();
+		List<Long> listaSteamIds = new ArrayList<>();
+
+		StringBuilder urlFriends = new StringBuilder();
+		urlFriends.append(SteamWebApi.BASE_URL.getMessage());
+		urlFriends.append(SteamWebApi.FRIEND_LIST.getMessage());
+		urlFriends.append(SteamWebApiArgs.createParam().addApiKey().addSteamId(steamId).addFormatJson().getArgs());
+
+		try {
+			JsonNode rootNode = mapper.readTree(ReadURL.read(urlFriends.toString()));
+			JsonNode friendsJson = rootNode.findValue("friends");
+			Iterator<JsonNode> elements = friendsJson.elements();
+			while (elements.hasNext()) {
+				JsonNode steamIdEncontrado = elements.next().get("steamid");
+				listaSteamIds.add(steamIdEncontrado.asLong());
+			}
+			StringBuilder urlProfiles = new StringBuilder();
+			urlProfiles.append(SteamWebApi.BASE_URL.getMessage());
+			urlProfiles.append(SteamWebApi.PROFILE.getMessage());
+			urlProfiles.append(SteamWebApiArgs.createParam().addApiKey().addSteamIds(listaSteamIds).getArgs());
+			friends.addAll(readProfileJson(urlProfiles));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		//Pesquisar com +1 steamId
-		//http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=4869861D43428379308A740BCD9B276D&steamids=76561198003170021,76561198012078770
-		
+		return friends;
+	}
+	
+	private List<Profile> readProfileJson(StringBuilder url) {
+		List<Profile> profileList = new ArrayList<>();
 		try {
 			JsonNode rootNode = mapper.readTree(ReadURL.read(url.toString()));
 			JsonNode players = rootNode.findValue("players");
@@ -39,51 +69,26 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 				JsonNode json = elements.next();
 				boolean isPublic = json.get("personastate").asInt() == 1;
 				if (isPublic) {
-					return SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
-						 .withNickName(json.get("personaname").textValue())
-						 .withAvatarUrl(json.get("avatar").textValue())
-						 .withAvatarMediumUrl(json.get("avatarmedium").textValue())
-						 .withAvatarFullUrl(json.get("avatarfull").textValue())
-						 .withRealName(json.get("realname").textValue())
-						 .build();
-				} else {
-					return SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
+					profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
 						.withNickName(json.get("personaname").textValue())
 						.withAvatarUrl(json.get("avatar").textValue())
 						.withAvatarMediumUrl(json.get("avatarmedium").textValue())
 						.withAvatarFullUrl(json.get("avatarfull").textValue())
-						.build();
+						.withRealName(json.get("realname").textValue())
+						.build());
+				} else {
+					profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
+						.withNickName(json.get("personaname").textValue())
+						.withAvatarUrl(json.get("avatar").textValue())
+						.withAvatarMediumUrl(json.get("avatarmedium").textValue())
+						.withAvatarFullUrl(json.get("avatarfull").textValue())
+						.build());
 				}
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return profileList;
 	}
-
-	@Override
-	public List<Long> findFriendsBySteamId(Long steamId) {
-		List<Long> listaSteamIds = new ArrayList<>();
-
-		StringBuilder url = new StringBuilder();
-		url.append(SteamWebApi.BASE_URL.getMessage());
-		url.append(SteamWebApi.FRIEND_LIST.getMessage());
-		url.append(SteamWebApiArgs.createParam().addApiKey().addSteamId(steamId).addFormatJson().getArgs());
-
-		try {
-			JsonNode rootNode = mapper.readTree(ReadURL.read(url.toString()));
-			JsonNode friends = rootNode.findValue("friends");
-			Iterator<JsonNode> elements = friends.elements();
-			while (elements.hasNext()) {
-				JsonNode steamIdEncontrado = elements.next().get("steamid");
-				listaSteamIds.add(steamIdEncontrado.asLong());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return listaSteamIds;
-	}
-
+	
 }
