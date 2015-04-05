@@ -15,47 +15,37 @@ public class SteamWebApiArgs {
 	}
 	
 	public SteamWebApiArgs addApiKey() {
-		addParam();
-		args.put("key=", SteamWebApi.API_KEY.getMessage());
+		args.put("key", SteamWebApi.API_KEY.getMessage());
 		return this;
 	}
 	
 	public SteamWebApiArgs addSteamId(Long steamId) {
-		addParam();
-		args.put("steamid=", steamId.toString());
+		args.put("steamid", steamId.toString());
 		return this;
 	}
 	
 	public SteamWebApiArgs addAppId(Integer appId) {
-		addParam();
-		args.put("appid=", appId.toString());
+		args.put("appid", appId.toString());
 		return this;
 	}
 	
 	public SteamWebApiArgs addFormatJson() {
-		addParam();
-		args.put("format=", "json");
+		args.put("format", "json");
 		return this;
 	}
 
 	public String getArgs() {
-		String urlArgs = "";
-		for (String key : args.keySet()) {
-			urlArgs += key + args.get(key);
-		}
+		String urlArgs = "?";
+        boolean first = true;
+        for(Map.Entry<String, String> arg : args.entrySet()) {
+        	if(first) {
+                first = false;
+            } else {
+                urlArgs += '&';
+            }
+            urlArgs += String.format("%s=%s", arg.getKey(), arg.getValue());
+        }
 		return urlArgs;
-	}
-	
-	private void addParam() {
-		if (args.isEmpty()) {
-			args.put("?", "");
-		} else {
-			args.put("&", "");
-		}
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(SteamWebApiArgs.createParam().addSteamId(76561198003170021L).addApiKey().addAppId(12345).addFormatJson().getArgs());
 	}
 	
 }
