@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam;
+package br.com.achievehunter.core.steam.steamcompenser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+import br.com.achievehunter.core.steam.steamcompenser.GameStats;
+import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserUtils;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 

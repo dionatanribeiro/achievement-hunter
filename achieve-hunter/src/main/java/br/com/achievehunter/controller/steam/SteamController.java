@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import br.com.achievehunter.core.steam.SteamCompenserFacade;
+import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacade;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 

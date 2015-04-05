@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam;
+package br.com.achievehunter.core.steam.steamcompenser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import com.google.common.collect.Iterables;
 
+import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacade;
+import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacadeImpl;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -70,6 +72,16 @@ public class SteamCompenserFacadeTest {
 		
 		//Assert
 		assertThat("Deve encontrar dados de algum jogo do jogador: " + gameQualquer, notNullValue());
+	}
+	
+	@Test
+	public void quandoBuscaListaDeAmigos() {
+		//Arrange
+		long steamId = 76561198003170021L;
+		Profile steamProfile = facade.findSteamProfileBySteamId64(steamId);
+		
+		//Act
+		facade.findFriendListBySteamId(steamId);
 	}
 	
 }
