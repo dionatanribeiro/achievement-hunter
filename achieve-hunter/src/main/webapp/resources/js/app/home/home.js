@@ -25,13 +25,15 @@ function ViewModel() {
 
 	self.steamIdInformado = ko.observable();
 	
+	self.friendsCombo = ko.observableArray([]);
 	self.gamesCombo = ko.observableArray([]);
 
+	self.amigoSelecionado = ko.observable();
 	self.gameSelecionado = ko.observable();
 
 	self.loadSteamProfile = function() {
 		$("#ajaxLoader").show();
-		$.getJSON('/achieve-hunter/load-steam-profile/' + self.steamIdInformado(), function(data) {
+		$.getJSON('/achieve-hunter/steam/load-profile/' + self.steamIdInformado(), function(data) {
 			console.log("profile: ", data);
 			self.dados.steamId(data.steamId);
 			self.dados.realName(data.realName);
@@ -43,14 +45,22 @@ function ViewModel() {
 			self.dados.avatarMedium(data.avatarMedium);
 			self.dados.games(data.games);
 			self.gamesCombo(data.games);
+			self.loadFriends();
 		}).done(function() {
 			$("#ajaxLoader").hide();
 		});
 	}
 
+	self.loadFriends = function() {
+		$.getJSON('/achieve-hunter/steam/load-friends/' + self.dados.steamId(), function(data) {
+			console.log("friends: ", data);
+			self.friendsCombo(data);
+		});
+	}
+
 	self.loadGame = function() {
 		$("#ajaxLoader").show();
-		$.getJSON('/achieve-hunter/load-steam-game/' + self.dados.steamId() + '/' + self.gameSelecionado(), function(data) {
+		$.getJSON('/achieve-hunter/steam/load-game/' + self.dados.steamId() + '/' + self.gameSelecionado(), function(data) {
 			console.log("game: ", data);
 			self.game.appId(data.appId);
 			self.game.name(data.name);

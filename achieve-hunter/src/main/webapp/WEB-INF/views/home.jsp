@@ -29,11 +29,19 @@
 		<label id="realName" data-bind="text: dados.realName"></label>
 		<label id="nickName" data-bind="text: dados.nickName"></label>
 		<img id="avatar" data-bind="attr: {src: dados.avatarMedium}">
-		<select name="gameList" data-bind="options: gamesCombo,
-										   value: gameSelecionado,
-										   optionsText: 'name',
-										   optionsValue: 'appId',
-										   optionsCaption: 'Selecione...'">
+		<label for="friends">Lista de Amigos</label>
+		<select name="friends" data-bind="options: friendsCombo,
+										  value: amigoSelecionado,
+										  optionsText: 'nickName',
+										  optionsValue: 'steamId',
+										  optionsCaption: 'Selecione...'">
+		</select>
+		<label for="games">Lista de Jogos</label>
+		<select name="games" data-bind="options: gamesCombo,
+										value: gameSelecionado,
+										optionsText: 'name',
+										optionsValue: 'appId',
+										optionsCaption: 'Selecione...'">
 		</select>
 		<button id="btnSearhGame" class="btn-default" data-bind="click: loadGame">
 			<i class="fa fa-steam-square"></i>
