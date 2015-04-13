@@ -1,34 +1,27 @@
 package br.com.achievehunter.controller.steam;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacade;
 import br.com.achievehunter.core.steam.webapi.SteamWebApiService;
 
-import org.mockito.Mockito;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestContext.class, WebApplicationContext.class})
+@ContextConfiguration({"classpath*:spring/applicationContext.xml"})
 @WebAppConfiguration
 public class SteamControllerTest {
 
@@ -44,11 +37,12 @@ public class SteamControllerTest {
 		steamService = mock(SteamWebApiService.class);
 		ReflectionTestUtils.setField(controller, "steamService", steamService);
 		ReflectionTestUtils.setField(controller, "steamFacade", steamFacade);
+		mvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 	
 	@Test
 	public void quandoBuscaPerfil() throws Exception {
-		mvc.perform(get(SteamController.BASE_URL + "/load-profile/{steamId}", Mockito.anyLong()))
+		mvc.perform(get(SteamController.BASE_URL + "/load-profile/{steamId}", 1L))
 			.andExpect(status().isOk());
 		
 		verify(steamFacade, times(1)).findSteamProfileBySteamId64(Mockito.anyLong());
