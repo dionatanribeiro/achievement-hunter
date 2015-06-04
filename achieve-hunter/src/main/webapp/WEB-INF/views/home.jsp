@@ -8,7 +8,7 @@
 	<!-- 	{{>/WEB-INF/includes/essentials.jsp}} -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajaxLoad.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajax-loader.css" />
 </head>
 <body>
 	
