@@ -1,5 +1,5 @@
-var steamApiKey = '4869861D43428379308A740BCD9B276D';
 var steamUserId = '76561198003170021';
+var steamApiKey = '4869861D43428379308A740BCD9B276D';
 
 var mainUrl = 'http://api.steampowered.com/';
 

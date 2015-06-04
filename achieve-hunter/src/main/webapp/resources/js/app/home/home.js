@@ -74,6 +74,62 @@ function ViewModel() {
 		});
 	}
 
+	self.dadosTeste = {
+        title : ko.observable("Testando titulo do grafico"),
+        name : ko.observable("Testando assunto do grafico"),
+        data : ko.observableArray([
+    		['Dark Souls II',   26],
+            ['Football Manager 2015',       42],
+            ['GTA V',    4],
+            ['Hotline Miami 2',     7],
+            ['Metal Gear Solid Ground Zeroes',   9]
+    	])
+    }
+
+    self.loadChartData = function() {
+    	var data = [
+    		['Dark Souls II',   26],
+            ['Football Manager 2015',       42],
+            ['GTA V',    4],
+            ['Hotline Miami 2',     7],
+            ['Metal Gear Solid Ground Zeroes',   9]
+    	];
+    	return data;
+    }
+
+	self.loadPieChart = function() {
+        /*var element = $('#container')[0]; 
+        ko.cleanNode(element);*/
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: self.dadosTeste.title()
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: self.dadosTeste.name(),
+                data: self.dadosTeste.data()
+            }]
+        });
+    }
+
 };
 
 ko.bindingHandlers.dateTime = {

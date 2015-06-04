@@ -8,7 +8,7 @@
 	<!-- 	{{>/WEB-INF/includes/essentials.jsp}} -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajaxLoad.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajax-loader.css" />
 </head>
 <body>
 	
@@ -21,9 +21,13 @@
 	<label>Digite o id do usuário</label>
 	<input id="idProfileSteam" type="text" data-bind="value: steamIdInformado">
 	<button id="btnSearhProfile" class="btn-default" data-bind="click: loadSteamProfile">
+	<!-- <button id="btnSearhProfile" class="btn-default" data-bind="click: loadPieChart"> -->
 		<i class="fa fa-steam-square"></i>
 		Pesquisar
 	</button>
+	
+	<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto">
+	</div>
 
 	<div id="steamUserData" data-bind="visible: dados.steamId">
 		<label id="realName" data-bind="text: dados.realName"></label>
@@ -81,5 +85,9 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/bootstrap.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/knockout-3.3.0.js"></script>	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app/home/home.js"></script>
+	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/highcharts.js"></script>
+	<!-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app/highcharts/pie.js"></script> -->
+
 </body>
 </html>
