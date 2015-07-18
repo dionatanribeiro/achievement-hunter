@@ -1,67 +1,28 @@
 package br.com.achievehunter.core.steam.webapi;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class SteamWebApiArgs {
+public enum SteamWebApiArgs {
 	
-	private static Map<String, String> args;
+	API_KEY("4869861D43428379308A740BCD9B276D"),
+	BASE_URL("http://api.steampowered.com/"),
+	PROFILE("ISteamUser/GetPlayerSummaries/v0002/"),
+	FRIEND_LIST("ISteamUser/GetFriendList/v0001/"),
+	GAME("ISteamUserStats/GetSchemaForGame/v2/"),
+	PLAYER_GAME_LIST("IPlayerService/GetOwnedGames/v0001/"),
+	PLAYER_GAME_STATS("ISteamUserStats/GetUserStatsForGame/v0002/"),
+	PLAYER_ACHIEVEMENT_GAME("ISteamUserStats/GetPlayerAchievements/v0001/");
 	
-	private SteamWebApiArgs() { }
+	private String message; 
 	
-	public static SteamWebApiArgs createParam() {
-		args = new HashMap<String, String>();
-		return new SteamWebApiArgs();
-	}
-	
-	public SteamWebApiArgs addApiKey() {
-		args.put("key", SteamWebApi.API_KEY.getMessage());
-		return this;
-	}
-	
-	public SteamWebApiArgs addSteamId(Long steamId) {
-		args.put("steamid", steamId.toString());
-		return this;
-	}
-	
-	public SteamWebApiArgs addSteamIds(List<Long> steamIds) {
-		String ids = "";
-		boolean first = true;
-		for (Long id : steamIds) {
-			if (first) {
-				first = false;
-			} else {
-				ids += ",";
-			}
-			ids += id;
-		}
-		args.put("steamids", ids);
-		return this;
-	}
-	
-	public SteamWebApiArgs addAppId(Integer appId) {
-		args.put("appid", appId.toString());
-		return this;
-	}
-	
-	public SteamWebApiArgs addFormatJson() {
-		args.put("format", "json");
-		return this;
+	private SteamWebApiArgs(String message) {
+		this.message = message;
 	}
 
-	public String getArgs() {
-		String urlArgs = "?";
-        boolean first = true;
-        for(Map.Entry<String, String> arg : args.entrySet()) {
-        	if(first) {
-                first = false;
-            } else {
-                urlArgs += '&';
-            }
-            urlArgs += String.format("%s=%s", arg.getKey(), arg.getValue());
-        }
-		return urlArgs;
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }

@@ -1,7 +1,7 @@
 function ViewModel() {
 	var self = this;
 	
-	self.dados = {
+	self.usuario = {
 		steamId : ko.observable(),
 		realName : ko.observable(),
 		nickName : ko.observable(),
@@ -28,22 +28,30 @@ function ViewModel() {
 	self.friendsCombo = ko.observableArray([]);
 	self.gamesCombo = ko.observableArray([]);
 
-	self.amigoSelecionado = ko.observable();
 	self.gameSelecionado = ko.observable();
+	
+	self.amigoSelecionado = ko.observable();
+
+	self.comparacaoAchievementComAmigo = ko.observable(false);
+
+	self.amigoComparacao = {
+		nickName : ko.observable(),
+		achievements : ko.observableArray([])	
+	}
 
 	self.loadSteamProfile = function() {
 		$("#ajaxLoader").show();
 		$.getJSON('/achieve-hunter/steam/load-profile/' + self.steamIdInformado(), function(data) {
 			console.log("profile: ", data);
-			self.dados.steamId(data.steamId);
-			self.dados.realName(data.realName);
-			self.dados.nickName(data.nickName);
-			self.dados.resumo(data.resumo);
-			self.dados.nickName(data.endereco);
-			self.dados.avatar(data.avatar);
-			self.dados.avatarFull(data.avatarFull);
-			self.dados.avatarMedium(data.avatarMedium);
-			self.dados.games(data.games);
+			self.usuario.steamId(data.steamId);
+			self.usuario.realName(data.realName);
+			self.usuario.nickName(data.nickName);
+			self.usuario.resumo(data.resumo);
+			self.usuario.endereco(data.endereco);
+			self.usuario.avatar(data.avatar);
+			self.usuario.avatarFull(data.avatarFull);
+			self.usuario.avatarMedium(data.avatarMedium);
+			self.usuario.games(data.games);
 			self.gamesCombo(data.games);
 			self.loadFriends();
 		}).done(function() {
@@ -52,7 +60,7 @@ function ViewModel() {
 	}
 
 	self.loadFriends = function() {
-		$.getJSON('/achieve-hunter/steam/load-friends/' + self.dados.steamId(), function(data) {
+		$.getJSON('/achieve-hunter/steam/load-friends/' + self.usuario.steamId(), function(data) {
 			console.log("friends: ", data);
 			self.friendsCombo(data);
 		});
@@ -60,7 +68,7 @@ function ViewModel() {
 
 	self.loadGame = function() {
 		$("#ajaxLoader").show();
-		$.getJSON('/achieve-hunter/steam/load-game/' + self.dados.steamId() + '/' + self.gameSelecionado(), function(data) {
+		$.getJSON('/achieve-hunter/steam/load-game/' + self.usuario.steamId() + '/' + self.gameSelecionado(), function(data) {
 			console.log("game: ", data);
 			self.game.appId(data.appId);
 			self.game.name(data.name);
@@ -72,6 +80,16 @@ function ViewModel() {
 		}).done(function() {
 			$("#ajaxLoader").hide();
 		});
+	}
+
+	self.loadAchievementsGameByFriend = function() {
+		$("#ajaxLoader").show();
+		$.getJSON('/achieve-hunter/steam/load-game/' + self.amigoSelecionado() + '/' + self.gameSelecionado(), function(data) {
+			console.log("game: ", data);
+			self.friendAchievements(data.achievements);
+		}).done(function() {
+			$("#ajaxLoader").hide();
+		});	
 	}
 
 };

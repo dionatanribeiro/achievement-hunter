@@ -62,7 +62,7 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 			SteamId usuario = SteamId.create(steamId);
 			SteamId[] steamCompenserFriendList = usuario.getFriends();
 			List<Profile> friendList = new ArrayList<>();
-			for (SteamId amigo : steamCompenserFriendList) {
+			for (SteamId friend : steamCompenserFriendList) {
 				
 			}
 		} catch (SteamCondenserException e) {

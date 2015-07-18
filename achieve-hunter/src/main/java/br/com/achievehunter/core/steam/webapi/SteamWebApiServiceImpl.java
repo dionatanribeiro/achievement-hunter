@@ -2,7 +2,6 @@ package br.com.achievehunter.core.steam.webapi;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,11 +21,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 	
 	@Override
 	public Profile findProfileBySteamId(Long steamId) {
-		StringBuilder url = new StringBuilder();
-		url.append(SteamWebApi.BASE_URL.getMessage());
-		url.append(SteamWebApi.PROFILE.getMessage());
-		url.append(SteamWebApiArgs.createParam().addApiKey().addSteamIds(Arrays.asList(steamId)).getArgs());
-		return readProfileJson(url).stream().findFirst().get();
+		return readProfileJson(SteamWebApiUrlUtils.getProfile(steamId)).stream().findFirst().get();
 	}
 
 	@Override
@@ -34,35 +29,26 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 		List<Profile> friends = new ArrayList<>();
 		List<Long> listaSteamIds = new ArrayList<>();
 
-		StringBuilder urlFriends = new StringBuilder();
-		urlFriends.append(SteamWebApi.BASE_URL.getMessage());
-		urlFriends.append(SteamWebApi.FRIEND_LIST.getMessage());
-		urlFriends.append(SteamWebApiArgs.createParam().addApiKey().addSteamId(steamId).addFormatJson().getArgs());
-
 		try {
-			JsonNode rootNode = mapper.readTree(ReadURL.read(urlFriends.toString()));
+			JsonNode rootNode = mapper.readTree(ReadURL.read(SteamWebApiUrlUtils.getFriendList(steamId)));
 			JsonNode friendsJson = rootNode.findValue("friends");
 			Iterator<JsonNode> elements = friendsJson.elements();
 			while (elements.hasNext()) {
 				JsonNode steamIdEncontrado = elements.next().get("steamid");
 				listaSteamIds.add(steamIdEncontrado.asLong());
 			}
-			StringBuilder urlProfiles = new StringBuilder();
-			urlProfiles.append(SteamWebApi.BASE_URL.getMessage());
-			urlProfiles.append(SteamWebApi.PROFILE.getMessage());
-			urlProfiles.append(SteamWebApiArgs.createParam().addApiKey().addSteamIds(listaSteamIds).getArgs());
-			friends.addAll(readProfileJson(urlProfiles));
+			friends.addAll(readProfileJson(SteamWebApiUrlUtils.getProfileList(listaSteamIds)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		return friends;
 	}
-	
-	private List<Profile> readProfileJson(StringBuilder url) {
+
+	private List<Profile> readProfileJson(String url) {
 		List<Profile> profileList = new ArrayList<>();
 		try {
-			JsonNode rootNode = mapper.readTree(ReadURL.read(url.toString()));
+			JsonNode rootNode = mapper.readTree(ReadURL.read(url));
 			JsonNode players = rootNode.findValue("players");
 			Iterator<JsonNode> elements = players.elements();
 			while (elements.hasNext()) {
@@ -74,7 +60,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 						.withAvatarUrl(json.get("avatar").textValue())
 						.withAvatarMediumUrl(json.get("avatarmedium").textValue())
 						.withAvatarFullUrl(json.get("avatarfull").textValue())
-						.withRealName(json.get("realname").textValue())
+						.withRealName(json.get("realname").textValue() != null ? json.get("realname").textValue() : "")
 						.build());
 				} else {
 					profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
