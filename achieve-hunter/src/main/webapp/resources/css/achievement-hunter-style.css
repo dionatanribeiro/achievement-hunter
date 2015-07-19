@@ -1,0 +1,17 @@
+text-center {
+    height: 90px;
+    width: 270px;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 5px;
+    line-height: 90px;
+}
+
+box-spacing-m {
+	padding: 10px;
+}
+
+box-spacing-g {
+	padding: 50px;
+}
+

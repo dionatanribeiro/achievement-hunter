@@ -1,0 +1,26 @@
+.circle {
+	line-height: 0; /* remove line-height */
+	display: inline-block; /* circle wraps image */
+	margin: 5px;
+	border: 2px solid rgba(255, 255, 255, 0.4);
+	border-radius: 50%; /* relative value */
+	/*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+	transition: linear 0.25s;
+/* 	height: 64px; */
+/* 	width: 64px; */
+}
+
+.circle img {
+	border-radius: 50%; /* relative value for
+				   adjustable image size */
+}
+
+.circle:hover {
+	transition: ease-out 0.2s;
+	border: 2px solid rgba(255, 255, 255, 0.8);
+	-webkit-transition: ease-out 0.2s;
+}
+
+a.circle {
+	color: transparent;
+} /* IE fix: removes blue border */
