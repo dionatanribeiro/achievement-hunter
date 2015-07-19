@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,7 +15,7 @@ import com.github.koraktor.steamcondenser.steam.community.GameAchievement;
 import com.github.koraktor.steamcondenser.steam.community.SteamGame;
 import com.google.common.annotations.VisibleForTesting;
 
-public abstract class SteamCompenserUtils {
+public abstract class SteamCondenserUtils {
 
 	public static Game loadGame(Long steamUserId, Integer appId) {
 		Game game = null;

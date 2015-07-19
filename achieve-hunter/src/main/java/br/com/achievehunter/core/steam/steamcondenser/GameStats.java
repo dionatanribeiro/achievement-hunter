@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
 
 import java.util.ArrayList;
 import java.util.List;

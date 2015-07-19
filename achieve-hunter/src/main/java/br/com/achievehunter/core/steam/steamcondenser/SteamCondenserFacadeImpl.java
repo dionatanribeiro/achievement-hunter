@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
 import br.com.achievehunter.core.steam.builder.SteamProfileBuilder;
+import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
@@ -15,7 +16,7 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.SteamId;
 
 @Service
-public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
+public class SteamCondenserFacadeImpl implements SteamCondenserFacade {
 
 	@Override
 	public Profile findSteamProfileBySteamId64(Long steamId) {
@@ -53,22 +54,16 @@ public class SteamCompenserFacadeImpl implements SteamCompenserFacade {
 
 	@Override
 	public Game findGameByUserIdAndGameId(Long steamUserId, Integer appId) {
-		return SteamCompenserUtils.loadGame(steamUserId, appId);
+		return SteamCondenserUtils.loadGame(steamUserId, appId);
 	}
 
 	@Override
-	public List<Profile> findFriendListBySteamId(Long steamId) {
-		try {
-			SteamId usuario = SteamId.create(steamId);
-			SteamId[] steamCompenserFriendList = usuario.getFriends();
-			List<Profile> friendList = new ArrayList<>();
-			for (SteamId friend : steamCompenserFriendList) {
-				
-			}
-		} catch (SteamCondenserException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public ComparacaoAchievementDto compareFriendAchievements(ComparacaoAchievementDto comparacaoAchievementDto) {
+		comparacaoAchievementDto
+			.setGameAchievementsUser(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame()));
+		comparacaoAchievementDto
+			.setGameAchievementsFriend(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame()));
+		return comparacaoAchievementDto;
 	}
-	
+
 }

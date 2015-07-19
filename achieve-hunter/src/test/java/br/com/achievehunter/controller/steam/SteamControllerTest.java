@@ -17,7 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacade;
+import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserFacade;
 import br.com.achievehunter.core.steam.webapi.SteamWebApiService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,16 +27,16 @@ public class SteamControllerTest {
 
 	private MockMvc mvc;
 	private SteamController controller;
-	private SteamCompenserFacade steamFacade;
+	private SteamCondenserFacade steamCondenserFacade;
 	private SteamWebApiService steamService;
 	
 	@Before
 	public void setUp() {
 		controller = new SteamController();
-		steamFacade = mock(SteamCompenserFacade.class);
+		steamCondenserFacade = mock(SteamCondenserFacade.class);
 		steamService = mock(SteamWebApiService.class);
 		ReflectionTestUtils.setField(controller, "steamService", steamService);
-		ReflectionTestUtils.setField(controller, "steamFacade", steamFacade);
+		ReflectionTestUtils.setField(controller, "steamCondenserFacade", steamCondenserFacade);
 		mvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 	
@@ -45,7 +45,7 @@ public class SteamControllerTest {
 		mvc.perform(get(SteamController.BASE_URL + "/load-profile/{steamId}", 1L))
 			.andExpect(status().isOk());
 		
-		verify(steamFacade, times(1)).findSteamProfileBySteamId64(Mockito.anyLong());
+		verify(steamCondenserFacade, times(1)).findSteamProfileBySteamId64(Mockito.anyLong());
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class SteamControllerTest {
 		mvc.perform(get(SteamController.BASE_URL + "/load-game/{steamId}/{appId}", Mockito.anyLong(), Mockito.anyInt()))
 			.andExpect(status().isOk());
 		
-		verify(steamFacade, times(1)).findGameByUserIdAndGameId(Mockito.anyLong(), Mockito.anyInt());
+		verify(steamCondenserFacade, times(1)).findGameByUserIdAndGameId(Mockito.anyLong(), Mockito.anyInt());
 	}
 	
 	@Test

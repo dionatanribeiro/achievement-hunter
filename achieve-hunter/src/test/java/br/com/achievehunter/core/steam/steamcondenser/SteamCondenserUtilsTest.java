@@ -1,4 +1,4 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import br.com.achievehunter.core.steam.steamcompenser.GameStats;
-import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserUtils;
+import br.com.achievehunter.core.steam.steamcondenser.GameStats;
+import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserUtils;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
@@ -23,7 +23,7 @@ import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
-public class SteamCompenserUtilsTest {
+public class SteamCondenserUtilsTest {
 	
 	@Test
 	public void quandoBuscaDadosDeUmJogoQualquer() throws SteamCondenserException {
@@ -46,7 +46,7 @@ public class SteamCompenserUtilsTest {
 		GameStats stats = GameStats.createGameStats(steamUserId, darkSoulsId);
 		
 		//Act
-		List<Achievement> achievementList = SteamCompenserUtils.getAchievementsByGameStats(stats);
+		List<Achievement> achievementList = SteamCondenserUtils.getAchievementsByGameStats(stats);
 		
 		//Assert
 		assertThat("Deve encontrar a lista de achievements do jogo", achievementList.isEmpty(), is(false));
@@ -59,7 +59,7 @@ public class SteamCompenserUtilsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		Game darkSouls = SteamCompenserUtils.loadGame(steamUserId, darkSoulsId);
+		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId);
 		
 		//Assert
 		assertThat("O game não deve ser nulo", darkSouls, notNullValue());
@@ -74,7 +74,7 @@ public class SteamCompenserUtilsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		Game darkSouls = SteamCompenserUtils.loadGame(steamUserId, darkSoulsId);
+		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId);
 		
 		//Assert
 		boolean iconesPreenchidos = darkSouls.getAchievements().stream().allMatch(a -> !Strings.isNullOrEmpty(a.getIcon()));
@@ -87,7 +87,7 @@ public class SteamCompenserUtilsTest {
 		List<Achievement> achievements = listaQualquerDeAchievements();
 		
 		//Act
-		List<Achievement> listaOrdenada = SteamCompenserUtils.ordenarPorDesbloqueioENome(achievements);
+		List<Achievement> listaOrdenada = SteamCondenserUtils.ordenarPorDesbloqueioENome(achievements);
 		Achievement achievementMaisRecente = listaOrdenada.stream().filter(a -> a.isAchieved())
 							  									   .max((a1, a2) -> a1.getDateUnlocked().compareTo(a2.getDateUnlocked()))
 							  									   .get();
