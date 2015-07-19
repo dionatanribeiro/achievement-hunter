@@ -13,4 +13,9 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String template() {
+		return "main";
+	}
+	
 }
