@@ -9,7 +9,9 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajax-loader.css" />
-	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/bootstrap.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/knockout-3.3.0.js"></script>
 </head>
 <body>
 	<div>
@@ -73,6 +75,13 @@
 						</button>
 					</div>
 
+					<div class="row-fluid">
+						<button id="btnCompareAchievements" class="btn-default" data-bind="click: loadAchievementsCompareGrid">
+							<i class="fa fa-steam-square"></i>
+							Comparar Achievements
+						</button>
+					</div>
+
 				</div>
 			</div>
 			</div>
@@ -108,30 +117,37 @@
 			</div>
 		</div>
 
-		<div id="comparacaoAchievements" data-bind="visible: comparacaoAchievementComAmigo">
-			<table>
-				<thead>
-					<tr>
-						<th data-bind="text: usuario.nickName"></th>
-						<th>Nome</th>
-						<th>Descrição</th>
-						<th>Data desbloqueio</th>
-					</tr>
-				</thead>
-				<tbody data-bind="foreach: game.achievements">
-					<tr>
-						<td><img data-bind="attr: { src: icon }"></td>
-						<td data-bind="text: name"></td>
-						<td data-bind="text: description"></td>
-						<td data-bind="text: date"></td>
-					</tr>
-				</tbody>
-			</table>
+		<div id="comparacaoAchievements" data-bind="visible: isCompareAchievement">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<!-- <img id="gameLogo" data-bind="attr: {src: game.logoUrl}">
+					<strong id="gameName" data-bind="text: game.name"></strong> -->
+					Teste
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Nome</th>
+							<th>Descricao</th>
+							<th>Data Comparacao</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: amigoComparacao.achievements">
+						<tr>
+							<td><img data-bind="attr: { src: achievementIconFirstUser }"></td>
+							<td data-bind="text: achievementName"></td>
+							<td data-bind="text: achievementDescription"></td>
+							<td data-bind="text: $parent.getDateCompare(achievementDateFirstUser, achievementDateSecondUser)"></td>
+							<td><img data-bind="attr: { src: achievementIconSecondUser }"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>	
 
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/bootstrap.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/libs/knockout-3.3.0.js"></script>	
+		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/app/home/home.js"></script>
 	</div>
 </body>

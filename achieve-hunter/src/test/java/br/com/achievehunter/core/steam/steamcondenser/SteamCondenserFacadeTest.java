@@ -11,6 +11,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.achievehunter.model.dto.AchievementCompareGridDto;
+import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
@@ -69,6 +71,44 @@ public class SteamCondenserFacadeTest {
 		
 		//Assert
 		assertThat("Deve encontrar dados de algum jogo do jogador: " + gameQualquer, notNullValue());
+	}
+	
+	@Test
+	public void quandoComparaAchievementsComUmAmigo() {
+		//Arrange
+		long idUser = 76561198003170021L;
+		long idFriend = 76561198079620996L;
+		int idDarkSouls2 = 236430; 
+		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
+		comparacaoAchievementDto.setIdFriend(idFriend);
+		comparacaoAchievementDto.setIdUser(idUser);
+		comparacaoAchievementDto.setIdGame(idDarkSouls2);
+		
+		//Act
+		AchievementCompareGridDto dtoResultado = facade.compareFriendAchievements(comparacaoAchievementDto);
+		
+		//Assert
+		assertThat("Lista de comparacao de achievements nao deve ser vazia", dtoResultado.getAchievementCompareDto().isEmpty(), is(false));
+	}
+	
+	@Test
+	public void verificaTamanhoListaDeAchievementsEmComparacao() {
+		//Arrange
+		long idUser = 76561198003170021L;
+		long idFriend = 76561198079620996L;
+		int idDarkSouls2 = 236430; 
+		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
+		comparacaoAchievementDto.setIdFriend(idFriend);
+		comparacaoAchievementDto.setIdUser(idUser);
+		comparacaoAchievementDto.setIdGame(idDarkSouls2);
+		int totalListaAchievementsDoJogo = facade.findGameByUserIdAndGameId(idUser, idDarkSouls2).getAchievements().size();
+		
+		//Act
+		int totalDtoResultado = facade.compareFriendAchievements(comparacaoAchievementDto).getAchievementCompareDto().size();
+		
+		//Assert
+		assertThat("Lista de comparacao de achievements deve ter o mesmo tamanho que a lista original", 
+				totalListaAchievementsDoJogo == totalDtoResultado, is(true));
 	}
 	
 }

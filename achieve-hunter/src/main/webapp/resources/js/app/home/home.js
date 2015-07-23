@@ -32,10 +32,11 @@ function ViewModel() {
 	
 	self.amigoSelecionado = ko.observable();
 
-	self.comparacaoAchievementComAmigo = ko.observable(false);
+	self.isCompareAchievement = ko.observable(false);
 
 	self.amigoComparacao = {
 		nickName : ko.observable(),
+		avatar : ko.observable(),
 		achievements : ko.observableArray([])	
 	}
 
@@ -82,14 +83,41 @@ function ViewModel() {
 		});
 	}
 
-	self.loadAchievementsGameByFriend = function() {
+	self.getCompareAchievementsModel = function() {
+		self.model = {
+			idUser : ko.observable(self.usuario.steamId()),
+			idFriend : ko.observable(self.amigoSelecionado()),
+			idGame : ko.observable(self.gameSelecionado())
+		};
+		return ko.toJSON(self.model);
+	}
+
+	self.loadAchievementsCompareGrid = function() {
 		$("#ajaxLoader").show();
-		$.getJSON('/achieve-hunter/steam/load-game/' + self.amigoSelecionado() + '/' + self.gameSelecionado(), function(data) {
-			console.log("game: ", data);
-			self.friendAchievements(data.achievements);
-		}).done(function() {
-			$("#ajaxLoader").hide();
-		});	
+		$.ajax({ 
+		    url: "/achieve-hunter/steam/compare-friend-achievements", 
+		    type: 'POST', 
+		    dataType: 'json', 
+		    data: self.getCompareAchievementsModel(), 
+		    contentType: 'application/json',
+		    mimeType: 'application/json',
+		    success: function(data) { 
+				console.log("data: ", data);
+				$("#ajaxLoader").hide();
+				self.amigoComparacao.nickName(data.friendProfile.nickName);
+				self.amigoComparacao.avatar(data.friendProfile.avatar);
+				self.amigoComparacao.achievements(data.achievementCompareDto);
+				self.isCompareAchievement(true);
+		    },
+		    error:function(data,status,er) { 
+		        console.log("data: ", data);
+				$("#ajaxLoader").hide();
+		    }
+		});
+	}
+
+	self.getDateCompare = function(achievementDateFirstUser, achievementDateSecondUser) {
+		return achievementDateFirstUser + " || " + achievementDateSecondUser;
 	}
 
 };

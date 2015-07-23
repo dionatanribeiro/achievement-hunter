@@ -1,9 +1,15 @@
 package br.com.achievehunter.model.dto;
 
+import java.io.Serializable;
+import java.util.List;
+
 import br.com.achievehunter.model.steam.Game;
+import br.com.achievehunter.model.steam.Profile;
 
-public class ComparacaoAchievementDto {
+public class ComparacaoAchievementDto implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long idUser;
 	private Long idFriend;
 	private Integer idGame;

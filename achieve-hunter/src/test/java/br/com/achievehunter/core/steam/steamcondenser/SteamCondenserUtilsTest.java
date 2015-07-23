@@ -5,23 +5,16 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import br.com.achievehunter.core.steam.steamcondenser.GameStats;
-import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserUtils;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 
 public class SteamCondenserUtilsTest {
 	
@@ -46,7 +39,7 @@ public class SteamCondenserUtilsTest {
 		GameStats stats = GameStats.createGameStats(steamUserId, darkSoulsId);
 		
 		//Act
-		List<Achievement> achievementList = SteamCondenserUtils.getAchievementsByGameStats(stats);
+		List<Achievement> achievementList = SteamCondenserUtils.getAchievementsByGameStats(stats, true);
 		
 		//Assert
 		assertThat("Deve encontrar a lista de achievements do jogo", achievementList.isEmpty(), is(false));
@@ -59,7 +52,7 @@ public class SteamCondenserUtilsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId);
+		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId, true);
 		
 		//Assert
 		assertThat("O game não deve ser nulo", darkSouls, notNullValue());
@@ -74,7 +67,7 @@ public class SteamCondenserUtilsTest {
 		Integer darkSoulsId = 211420;
 		
 		//Act
-		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId);
+		Game darkSouls = SteamCondenserUtils.loadGame(steamUserId, darkSoulsId, true);
 		
 		//Assert
 		boolean iconesPreenchidos = darkSouls.getAchievements().stream().allMatch(a -> !Strings.isNullOrEmpty(a.getIcon()));

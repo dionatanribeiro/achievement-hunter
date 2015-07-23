@@ -28,7 +28,6 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 	public List<Profile> findFriendsBySteamId(Long steamId) {
 		List<Profile> friends = new ArrayList<>();
 		List<Long> listaSteamIds = new ArrayList<>();
-
 		try {
 			JsonNode rootNode = mapper.readTree(ReadURL.read(SteamWebApiUrlUtils.getFriendList(steamId)));
 			JsonNode friendsJson = rootNode.findValue("friends");
@@ -41,7 +40,6 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		return friends;
 	}
 
@@ -54,22 +52,15 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 			while (elements.hasNext()) {
 				JsonNode json = elements.next();
 				boolean isPublic = json.get("personastate").asInt() == 1;
-				if (isPublic) {
-					profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
-						.withNickName(json.get("personaname").textValue())
-						.withAvatarUrl(json.get("avatar").textValue())
-						.withAvatarMediumUrl(json.get("avatarmedium").textValue())
-						.withAvatarFullUrl(json.get("avatarfull").textValue())
-						.withRealName(json.get("realname").textValue() != null ? json.get("realname").textValue() : "")
-						.build());
-				} else {
-					profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
-						.withNickName(json.get("personaname").textValue())
-						.withAvatarUrl(json.get("avatar").textValue())
-						.withAvatarMediumUrl(json.get("avatarmedium").textValue())
-						.withAvatarFullUrl(json.get("avatarfull").textValue())
-						.build());
-				}
+				boolean isRealNameInformed = json.get("realname") != null;
+				// Verificar se deve adicionar usuarios com perfil nao publico dentro da lista.
+				profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
+					.withNickName(json.get("personaname").textValue())
+					.withAvatarUrl(json.get("avatar").textValue())
+					.withAvatarMediumUrl(json.get("avatarmedium").textValue())
+					.withAvatarFullUrl(json.get("avatarfull").textValue())
+					.withRealName(isPublic && isRealNameInformed ? json.get("realname").textValue() : "")
+					.build());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserFacade;
 import br.com.achievehunter.core.steam.webapi.SteamWebApiService;
+import br.com.achievehunter.model.dto.AchievementCompareGridDto;
 import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
@@ -50,8 +52,14 @@ public class SteamController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/compare-friend-achievements/", method = RequestMethod.POST)
-	public ComparacaoAchievementDto compareFriendAchievements(@RequestBody ComparacaoAchievementDto comparacaoAchievementDto) {
+	@RequestMapping(value = "/compare-friend-achievements", method = RequestMethod.POST)
+	public AchievementCompareGridDto compareFriendAchievements(@RequestBody ComparacaoAchievementDto comparacaoAchievementDto) {
+		return steamCondenserFacade.compareFriendAchievements(comparacaoAchievementDto);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/compare-achievements/{idGame}/{idUser}/{idFriend}/", method = RequestMethod.GET)
+	public AchievementCompareGridDto compareAchievements(@ModelAttribute ComparacaoAchievementDto comparacaoAchievementDto) {
 		return steamCondenserFacade.compareFriendAchievements(comparacaoAchievementDto);
 	}
 	

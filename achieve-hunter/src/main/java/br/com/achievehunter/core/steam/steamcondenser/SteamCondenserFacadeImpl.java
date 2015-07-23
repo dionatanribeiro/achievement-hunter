@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
 import br.com.achievehunter.core.steam.builder.SteamProfileBuilder;
+import br.com.achievehunter.model.dto.AchievementCompareGridDto;
 import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
@@ -54,16 +55,22 @@ public class SteamCondenserFacadeImpl implements SteamCondenserFacade {
 
 	@Override
 	public Game findGameByUserIdAndGameId(Long steamUserId, Integer appId) {
-		return SteamCondenserUtils.loadGame(steamUserId, appId);
+		return SteamCondenserUtils.loadGame(steamUserId, appId, true);
 	}
 
 	@Override
-	public ComparacaoAchievementDto compareFriendAchievements(ComparacaoAchievementDto comparacaoAchievementDto) {
+	public AchievementCompareGridDto compareFriendAchievements(ComparacaoAchievementDto comparacaoAchievementDto) {
 		comparacaoAchievementDto
-			.setGameAchievementsUser(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame()));
+			.setGameAchievementsUser(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame(), false));
 		comparacaoAchievementDto
-			.setGameAchievementsFriend(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame()));
-		return comparacaoAchievementDto;
+			.setGameAchievementsFriend(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame(), false));
+		
+		AchievementCompareGridDto grid = new AchievementCompareGridDto();
+		grid.setUserProfile(findSteamProfileBySteamId64(comparacaoAchievementDto.getIdUser()));
+		grid.setFriendProfile(findSteamProfileBySteamId64(comparacaoAchievementDto.getIdFriend()));
+		grid.setAchievementCompareDto(SteamCondenserUtils.buildCompareAchievementDto(comparacaoAchievementDto));
+		
+		return grid;
 	}
 
 }
