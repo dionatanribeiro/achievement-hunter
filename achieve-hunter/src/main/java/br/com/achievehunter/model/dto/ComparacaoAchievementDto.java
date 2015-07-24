@@ -1,9 +1,6 @@
 package br.com.achievehunter.model.dto;
 
 import java.io.Serializable;
-import java.util.List;
-
-import br.com.achievehunter.model.steam.Achievement;
 
 public class ComparacaoAchievementDto implements Serializable{
 

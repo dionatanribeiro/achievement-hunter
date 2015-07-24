@@ -3,7 +3,6 @@ package br.com.achievehunter.core.steam.steamcondenser;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThan;
-
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 
 public class SteamCondenserFacadeTest {
@@ -112,6 +112,19 @@ public class SteamCondenserFacadeTest {
 		assertThat("Deve retornar o total de conquistas maior que zero", compareAchievementGrid.getTotalGameAchievement().intValue(), greaterThan(0));
 		assertThat("Deve retornar o total de conquistas do usuario maior que zero", compareAchievementGrid.getTotalAchievementUnlockedUser().intValue(), greaterThan(0));
 		assertThat("Deve retornar o total de conquistas do amigo maior que zero", compareAchievementGrid.getTotalAchievementUnlockedFriend().intValue(), greaterThan(0));
+	}
+	
+	@Test
+	public void verificaInformacoesDoJogoDaGridComparacaoAchievements() {
+		//Arrange
+		ComparacaoAchievementDto comparacaoAchievementDto = buildComparacaoAchievementsDto();
+		
+		//Act
+		AchievementCompareGridDto compareAchievementGrid = facade.compareFriendAchievements(comparacaoAchievementDto);
+		
+		//Assert
+		assertThat("Deve retornar o logo do jogo", !Strings.isNullOrEmpty(compareAchievementGrid.getGameLogoUrl()), is(true));
+		assertThat("Deve retornar o nome do jogo", !Strings.isNullOrEmpty(compareAchievementGrid.getGameName()), is(true));
 	}
 	
 	private ComparacaoAchievementDto buildComparacaoAchievementsDto() {

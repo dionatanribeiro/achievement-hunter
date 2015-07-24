@@ -7,6 +7,9 @@ public class AchievementCompareGridDto {
 
 	private List<AchievementCompareLineDto> achievementCompareDto;
 
+	private String gameLogoUrl;
+	private String gameName;
+	
 	private String nickNameUser;
 	private String avatarUser;
 
@@ -24,6 +27,22 @@ public class AchievementCompareGridDto {
 	public void setAchievementCompareDto(
 			List<AchievementCompareLineDto> achievementCompareDto) {
 		this.achievementCompareDto = achievementCompareDto;
+	}
+
+	public String getGameLogoUrl() {
+		return gameLogoUrl;
+	}
+
+	public void setGameLogoUrl(String gameLogoUrl) {
+		this.gameLogoUrl = gameLogoUrl;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 
 	public String getNickNameUser() {

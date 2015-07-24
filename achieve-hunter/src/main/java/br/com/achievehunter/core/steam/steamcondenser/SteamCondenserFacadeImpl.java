@@ -62,12 +62,17 @@ public class SteamCondenserFacadeImpl implements SteamCondenserFacade {
 
 	@Override
 	public AchievementCompareGridDto compareFriendAchievements(ComparacaoAchievementDto comparacaoAchievementDto) {
+		Game gameChoosed = SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame(), false);
 		Profile userProfile = findSteamProfileBySteamId64(comparacaoAchievementDto.getIdUser());
 		Profile friendProfile = findSteamProfileBySteamId64(comparacaoAchievementDto.getIdFriend());
 		List<Achievement> achievementsUser = SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame(), false).getAchievements();
 		List<Achievement> achievementsFriend = SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame(), false).getAchievements();
 
 		AchievementCompareGridDto grid = new AchievementCompareGridDto();
+		
+		grid.setGameLogoUrl(gameChoosed.getLogoUrl());
+		grid.setGameName(gameChoosed.getName());
+		
 		grid.setNickNameUser(userProfile.getNickName());
 		grid.setAvatarUser(userProfile.getAvatarMedium());
 		
