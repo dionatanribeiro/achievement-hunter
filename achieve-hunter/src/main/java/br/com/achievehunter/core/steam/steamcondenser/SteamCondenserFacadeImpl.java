@@ -1,5 +1,6 @@
 package br.com.achievehunter.core.steam.steamcondenser;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
 import br.com.achievehunter.core.steam.builder.SteamProfileBuilder;
 import br.com.achievehunter.model.dto.AchievementCompareGridDto;
 import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
+import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
@@ -60,15 +62,23 @@ public class SteamCondenserFacadeImpl implements SteamCondenserFacade {
 
 	@Override
 	public AchievementCompareGridDto compareFriendAchievements(ComparacaoAchievementDto comparacaoAchievementDto) {
-		comparacaoAchievementDto
-			.setGameAchievementsUser(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame(), false));
-		comparacaoAchievementDto
-			.setGameAchievementsFriend(SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame(), false));
-		
+		Profile userProfile = findSteamProfileBySteamId64(comparacaoAchievementDto.getIdUser());
+		Profile friendProfile = findSteamProfileBySteamId64(comparacaoAchievementDto.getIdFriend());
+		List<Achievement> achievementsUser = SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame(), false).getAchievements();
+		List<Achievement> achievementsFriend = SteamCondenserUtils.loadGame(comparacaoAchievementDto.getIdFriend(), comparacaoAchievementDto.getIdGame(), false).getAchievements();
+
 		AchievementCompareGridDto grid = new AchievementCompareGridDto();
-		grid.setUserProfile(findSteamProfileBySteamId64(comparacaoAchievementDto.getIdUser()));
-		grid.setFriendProfile(findSteamProfileBySteamId64(comparacaoAchievementDto.getIdFriend()));
-		grid.setAchievementCompareDto(SteamCondenserUtils.buildCompareAchievementDto(comparacaoAchievementDto));
+		grid.setNickNameUser(userProfile.getNickName());
+		grid.setAvatarUser(userProfile.getAvatarMedium());
+		
+		grid.setNickNameFriend(friendProfile.getNickName());
+		grid.setAvatarFriend(friendProfile.getAvatarMedium());
+		
+		grid.setTotalGameAchievement(BigDecimal.valueOf(achievementsUser.size()));
+		grid.setTotalAchievementUnlockedUser(BigDecimal.valueOf(achievementsUser.stream().filter(a -> a.isAchieved()).count()));
+		grid.setTotalAchievementUnlockedFriend(BigDecimal.valueOf(achievementsFriend.stream().filter(a -> a.isAchieved()).count()));
+		
+		grid.setAchievementCompareDto(SteamCondenserUtils.buildCompareAchievementDto(achievementsUser, achievementsFriend));
 		
 		return grid;
 	}

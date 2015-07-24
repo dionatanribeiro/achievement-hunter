@@ -3,8 +3,7 @@ package br.com.achievehunter.model.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import br.com.achievehunter.model.steam.Game;
-import br.com.achievehunter.model.steam.Profile;
+import br.com.achievehunter.model.steam.Achievement;
 
 public class ComparacaoAchievementDto implements Serializable{
 
@@ -13,8 +12,6 @@ public class ComparacaoAchievementDto implements Serializable{
 	private Long idUser;
 	private Long idFriend;
 	private Integer idGame;
-	private Game gameAchievementsUser;
-	private Game gameAchievementsFriend;
 
 	public Long getIdUser() {
 		return idUser;
@@ -40,20 +37,5 @@ public class ComparacaoAchievementDto implements Serializable{
 		this.idGame = idGame;
 	}
 
-	public Game getGameAchievementsUser() {
-		return gameAchievementsUser;
-	}
-
-	public void setGameAchievementsUser(Game gameAchievementsUser) {
-		this.gameAchievementsUser = gameAchievementsUser;
-	}
-
-	public Game getGameAchievementsFriend() {
-		return gameAchievementsFriend;
-	}
-
-	public void setGameAchievementsFriend(Game gameAchievementsFriend) {
-		this.gameAchievementsFriend = gameAchievementsFriend;
-	}
 
 }

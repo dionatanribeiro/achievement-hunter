@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
-import br.com.achievehunter.model.dto.AchievementCompareDto;
-import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
+import br.com.achievehunter.model.dto.AchievementCompareLineDto;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
@@ -82,25 +81,22 @@ public abstract class SteamCondenserUtils {
 	 *  adiciona em na lista da DTO
 	 *  retornar
 	 */
-	public static List<AchievementCompareDto> buildCompareAchievementDto(ComparacaoAchievementDto comparacaoAchievementDto) {
-		List<AchievementCompareDto> compareAchievementGrid = new ArrayList<>();
+	public static List<AchievementCompareLineDto> buildCompareAchievementDto(List<Achievement> achievementsUser, List<Achievement> achievementsFriend) {
+		List<AchievementCompareLineDto> compareAchievementGrid = new ArrayList<>();
 		
-		List<Achievement> userList = comparacaoAchievementDto.getGameAchievementsUser().getAchievements();
-		List<Achievement> friendList = comparacaoAchievementDto.getGameAchievementsFriend().getAchievements();
-		
-		userList.forEach(achievementUser -> {
-			Achievement achievementFriend = friendList.stream()
-				.filter(a2 -> a2.getApiName().equals(achievementUser.getApiName()))
+		achievementsUser.forEach(achievementUser -> {
+			Achievement achievementFriend = achievementsFriend.stream()
+				.filter(achievement -> achievement.getApiName().equals(achievementUser.getApiName()))
 				.findFirst().get();
-			AchievementCompareDto dto = new AchievementCompareDto();
-			dto.setAchievementApiName(achievementUser.getApiName());
-			dto.setAchievementName(achievementUser.getName());
-			dto.setAchievementDescription(achievementUser.getDescription());
-			dto.setAchievementIconFirstUser(achievementUser.getIcon());
-			dto.setAchievementIconSecondUser(achievementFriend.getIcon());
-			dto.setAchievementDateFirstUser(achievementUser.getDate());
-			dto.setAchievementDateSecondUser(achievementFriend.getDate());
-			compareAchievementGrid.add(dto);
+			AchievementCompareLineDto gridLine = new AchievementCompareLineDto();
+			gridLine.setAchievementApiName(achievementUser.getApiName());
+			gridLine.setAchievementName(achievementUser.getName());
+			gridLine.setAchievementDescription(achievementUser.getDescription());
+			gridLine.setAchievementIconFirstUser(achievementUser.getIcon());
+			gridLine.setAchievementIconSecondUser(achievementFriend.getIcon());
+			gridLine.setAchievementDateFirstUser(achievementUser.getDate());
+			gridLine.setAchievementDateSecondUser(achievementFriend.getDate());
+			compareAchievementGrid.add(gridLine);
 		});
 		
 		return compareAchievementGrid;

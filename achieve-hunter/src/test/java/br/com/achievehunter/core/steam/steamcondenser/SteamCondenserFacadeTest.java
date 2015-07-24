@@ -2,6 +2,8 @@ package br.com.achievehunter.core.steam.steamcondenser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.greaterThan;
+
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -76,13 +78,7 @@ public class SteamCondenserFacadeTest {
 	@Test
 	public void quandoComparaAchievementsComUmAmigo() {
 		//Arrange
-		long idUser = 76561198003170021L;
-		long idFriend = 76561198079620996L;
-		int idDarkSouls2 = 236430; 
-		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
-		comparacaoAchievementDto.setIdFriend(idFriend);
-		comparacaoAchievementDto.setIdUser(idUser);
-		comparacaoAchievementDto.setIdGame(idDarkSouls2);
+		ComparacaoAchievementDto comparacaoAchievementDto = buildComparacaoAchievementsDto();
 		
 		//Act
 		AchievementCompareGridDto dtoResultado = facade.compareFriendAchievements(comparacaoAchievementDto);
@@ -94,21 +90,39 @@ public class SteamCondenserFacadeTest {
 	@Test
 	public void verificaTamanhoListaDeAchievementsEmComparacao() {
 		//Arrange
-		long idUser = 76561198003170021L;
-		long idFriend = 76561198079620996L;
-		int idDarkSouls2 = 236430; 
-		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
-		comparacaoAchievementDto.setIdFriend(idFriend);
-		comparacaoAchievementDto.setIdUser(idUser);
-		comparacaoAchievementDto.setIdGame(idDarkSouls2);
-		int totalListaAchievementsDoJogo = facade.findGameByUserIdAndGameId(idUser, idDarkSouls2).getAchievements().size();
+		ComparacaoAchievementDto comparacaoAchievementDto = buildComparacaoAchievementsDto();
+		int totalListaAchievementsDoJogo = facade.findGameByUserIdAndGameId(comparacaoAchievementDto.getIdUser(), comparacaoAchievementDto.getIdGame()).getAchievements().size();
 		
 		//Act
 		int totalDtoResultado = facade.compareFriendAchievements(comparacaoAchievementDto).getAchievementCompareDto().size();
 		
 		//Assert
-		assertThat("Lista de comparacao de achievements deve ter o mesmo tamanho que a lista original", 
-				totalListaAchievementsDoJogo == totalDtoResultado, is(true));
+		assertThat("Lista de comparacao de achievements deve ter o mesmo tamanho que a lista original", totalListaAchievementsDoJogo == totalDtoResultado, is(true));
+	}
+
+	@Test
+	public void verificaTotalizadoresDaGridComparacaoAchievements() {
+		//Arrange
+		ComparacaoAchievementDto comparacaoAchievementDto = buildComparacaoAchievementsDto();
+	
+		//Act
+		AchievementCompareGridDto compareAchievementGrid = facade.compareFriendAchievements(comparacaoAchievementDto);
+		
+		//Assert
+		assertThat("Deve retornar o total de conquistas maior que zero", compareAchievementGrid.getTotalGameAchievement().intValue(), greaterThan(0));
+		assertThat("Deve retornar o total de conquistas do usuario maior que zero", compareAchievementGrid.getTotalAchievementUnlockedUser().intValue(), greaterThan(0));
+		assertThat("Deve retornar o total de conquistas do amigo maior que zero", compareAchievementGrid.getTotalAchievementUnlockedFriend().intValue(), greaterThan(0));
+	}
+	
+	private ComparacaoAchievementDto buildComparacaoAchievementsDto() {
+		long idUser = 76561198003170021L;
+		long idFriend = 76561198079620996L;
+		int idDarkSouls2 = 236430;
+		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
+		comparacaoAchievementDto.setIdFriend(idFriend);
+		comparacaoAchievementDto.setIdUser(idUser);
+		comparacaoAchievementDto.setIdGame(idDarkSouls2);
+		return comparacaoAchievementDto;
 	}
 	
 }

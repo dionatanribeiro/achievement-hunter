@@ -1,6 +1,7 @@
 package br.com.achievehunter.model.dto;
 
-public class AchievementCompareDto {
+
+public class AchievementCompareLineDto {
 
 	private String achievementApiName;
 	private String achievementName;
@@ -8,6 +9,7 @@ public class AchievementCompareDto {
 
 	private String achievementIconFirstUser;
 	private String achievementIconSecondUser;
+	
 	private String achievementDateFirstUser;
 	private String achievementDateSecondUser;
 
