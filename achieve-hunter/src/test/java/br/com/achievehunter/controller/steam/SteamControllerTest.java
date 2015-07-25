@@ -4,21 +4,27 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import br.com.achievehunter.core.steam.steamcompenser.SteamCompenserFacade;
+import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserFacade;
 import br.com.achievehunter.core.steam.webapi.SteamWebApiService;
+import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath*:spring/applicationContext.xml"})
@@ -27,16 +33,16 @@ public class SteamControllerTest {
 
 	private MockMvc mvc;
 	private SteamController controller;
-	private SteamCompenserFacade steamFacade;
+	private SteamCondenserFacade steamCondenserFacade;
 	private SteamWebApiService steamService;
 	
 	@Before
 	public void setUp() {
 		controller = new SteamController();
-		steamFacade = mock(SteamCompenserFacade.class);
+		steamCondenserFacade = mock(SteamCondenserFacade.class);
 		steamService = mock(SteamWebApiService.class);
 		ReflectionTestUtils.setField(controller, "steamService", steamService);
-		ReflectionTestUtils.setField(controller, "steamFacade", steamFacade);
+		ReflectionTestUtils.setField(controller, "steamCondenserFacade", steamCondenserFacade);
 		mvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 	
@@ -45,7 +51,7 @@ public class SteamControllerTest {
 		mvc.perform(get(SteamController.BASE_URL + "/load-profile/{steamId}", 1L))
 			.andExpect(status().isOk());
 		
-		verify(steamFacade, times(1)).findSteamProfileBySteamId64(Mockito.anyLong());
+		verify(steamCondenserFacade, times(1)).findSteamProfileBySteamId64(Mockito.anyLong());
 	}
 	
 	@Test
@@ -53,7 +59,7 @@ public class SteamControllerTest {
 		mvc.perform(get(SteamController.BASE_URL + "/load-game/{steamId}/{appId}", Mockito.anyLong(), Mockito.anyInt()))
 			.andExpect(status().isOk());
 		
-		verify(steamFacade, times(1)).findGameByUserIdAndGameId(Mockito.anyLong(), Mockito.anyInt());
+		verify(steamCondenserFacade, times(1)).findGameByUserIdAndGameId(Mockito.anyLong(), Mockito.anyInt());
 	}
 	
 	@Test
@@ -62,6 +68,17 @@ public class SteamControllerTest {
 			.andExpect(status().isOk());
 		
 		verify(steamService, times(1)).findFriendsBySteamId(Mockito.anyLong());
+	}
+	
+	@Test
+	public void quandoComparaAchievements() throws Exception {
+		ComparacaoAchievementDto comparacaoAchievementDto = new ComparacaoAchievementDto();
+		mvc.perform(get(SteamController.BASE_URL + "/compare-friend-achievements")
+				.contentType(MediaType.APPLICATION_JSON)
+				)
+			.andExpect(status().isOk());
+			
+		verify(steamCondenserFacade, times(1)).compareFriendAchievements(Mockito.any(ComparacaoAchievementDto.class));
 	}
 	
 }

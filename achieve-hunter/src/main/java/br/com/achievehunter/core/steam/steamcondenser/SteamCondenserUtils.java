@@ -1,12 +1,14 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
+
+import static br.com.achievehunter.core.utils.LocalDateTimeUtils.dateToLocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static br.com.achievehunter.core.utils.LocalDateTimeUtils.dateToLocalDateTime;
 import br.com.achievehunter.core.steam.builder.SteamGameBuilder;
+import br.com.achievehunter.model.dto.AchievementCompareLineDto;
 import br.com.achievehunter.model.steam.Achievement;
 import br.com.achievehunter.model.steam.Game;
 
@@ -15,9 +17,9 @@ import com.github.koraktor.steamcondenser.steam.community.GameAchievement;
 import com.github.koraktor.steamcondenser.steam.community.SteamGame;
 import com.google.common.annotations.VisibleForTesting;
 
-public abstract class SteamCompenserUtils {
+public abstract class SteamCondenserUtils {
 
-	public static Game loadGame(Long steamUserId, Integer appId) {
+	public static Game loadGame(Long steamUserId, Integer appId, boolean isOrderByUnlocked) {
 		Game game = null;
 		try {
 			GameStats gameStatsByPlayer = GameStats.createGameStats(steamUserId, appId);
@@ -28,7 +30,7 @@ public abstract class SteamCompenserUtils {
 											 .withLogoUrl(steamCompenserGame.getLogoUrl())
 											 .withLogoThumbnailUrl(steamCompenserGame.getLogoThumbnailUrl())
 											 .withIconUrl(steamCompenserGame.getIconUrl())
-											 .withAchievements(getAchievementsByGameStats(gameStatsByPlayer))
+											 .withAchievements(getAchievementsByGameStats(gameStatsByPlayer, isOrderByUnlocked))
 											 .build();
 		} catch (SteamCondenserException e) {
 			System.out.println(e.getMessage().toString());
@@ -37,7 +39,7 @@ public abstract class SteamCompenserUtils {
 	}
 	
 	@VisibleForTesting
-	public static List<Achievement> getAchievementsByGameStats(GameStats stats) throws SteamCondenserException {
+	public static List<Achievement> getAchievementsByGameStats(GameStats stats, boolean isOrderByUnlocked) throws SteamCondenserException {
 		List<GameAchievement> steamCompenserAchievements = stats.getAchievements();
 		List<Achievement> achievementList = new ArrayList<>();
 		for (GameAchievement compenserAchievement : steamCompenserAchievements) {
@@ -51,7 +53,7 @@ public abstract class SteamCompenserUtils {
 			achievement.setAchieved(compenserAchievement.isUnlocked());
 			achievementList.add(achievement);
 		}
-		return ordenarPorDesbloqueioENome(achievementList);
+		return isOrderByUnlocked ? ordenarPorDesbloqueioENome(achievementList) : achievementList ;
 	}
 
 	@VisibleForTesting
@@ -68,6 +70,36 @@ public abstract class SteamCompenserUtils {
 		achievements.addAll(achievementsDesbloqueados);
 		achievements.addAll(achievementsBloqueados);
 		return achievements;
+	}
+
+	/**
+	 *  Recebe lista do jogo 
+	 *  Percorre lista do jogo
+	 *  construir a DTO
+	 *  filtra pela o nome do achieve do jogo igual o nome do achive de um dos jogadores
+	 *  pega os dados e coloca na DTO
+	 *  adiciona em na lista da DTO
+	 *  retornar
+	 */
+	public static List<AchievementCompareLineDto> buildCompareAchievementDto(List<Achievement> achievementsUser, List<Achievement> achievementsFriend) {
+		List<AchievementCompareLineDto> compareAchievementGrid = new ArrayList<>();
+		
+		achievementsUser.forEach(achievementUser -> {
+			Achievement achievementFriend = achievementsFriend.stream()
+				.filter(achievement -> achievement.getApiName().equals(achievementUser.getApiName()))
+				.findFirst().get();
+			AchievementCompareLineDto gridLine = new AchievementCompareLineDto();
+			gridLine.setAchievementApiName(achievementUser.getApiName());
+			gridLine.setAchievementName(achievementUser.getName());
+			gridLine.setAchievementDescription(achievementUser.getDescription());
+			gridLine.setAchievementIconFirstUser(achievementUser.getIcon());
+			gridLine.setAchievementIconSecondUser(achievementFriend.getIcon());
+			gridLine.setAchievementDateFirstUser(achievementUser.getDate());
+			gridLine.setAchievementDateSecondUser(achievementFriend.getDate());
+			compareAchievementGrid.add(gridLine);
+		});
+		
+		return compareAchievementGrid;
 	}
 	
 }

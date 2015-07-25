@@ -1,10 +1,10 @@
-package br.com.achievehunter.core.steam.steamcompenser;
+package br.com.achievehunter.core.steam.steamcondenser;
 
 import java.util.List;
 
 import org.junit.Test;
 
-import br.com.achievehunter.core.steam.steamcompenser.GameStats;
+import br.com.achievehunter.core.steam.steamcondenser.GameStats;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 import com.github.koraktor.steamcondenser.steam.community.GameAchievement;
