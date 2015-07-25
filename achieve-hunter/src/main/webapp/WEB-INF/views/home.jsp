@@ -120,18 +120,27 @@
 		<div id="comparacaoAchievements" data-bind="visible: isCompareAchievement">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<!-- <img id="gameLogo" data-bind="attr: {src: game.logoUrl}">
-					<strong id="gameName" data-bind="text: game.name"></strong> -->
-					Teste
+					<img id="gameLogo" data-bind="attr: {src: game.logoUrl}">
+					<strong id="gameName" data-bind="text: game.name"></strong>
+					<br>
+					<label>Total de Achievements do Jogo:</label>
+					<p data-bind="text: game.totalAchievements"></p>
+					<br>
+					<label>Total de Achievements de </label><p data-bind="text: usuario.nickName"></p>
+					<p data-bind="text: usuario.totalAchievements"></p>
+					<br>
+					<label>Total de Achievements de </label><p data-bind="text: amigoComparacao.nickName"></p>
+					<p data-bind="text: amigoComparacao.totalAchievements"></p>
+					<br>
 				</div>
 				<table class="table">
 					<thead>
 						<tr>
-							<th></th>
+							<th data-bind="text: usuario.nickName"></th>
 							<th>Nome</th>
 							<th>Descricao</th>
 							<th>Data Comparacao</th>
-							<th></th>
+							<th data-bind="text: amigoComparacao.nickName"></th>
 						</tr>
 					</thead>
 					<tbody data-bind="foreach: amigoComparacao.achievements">

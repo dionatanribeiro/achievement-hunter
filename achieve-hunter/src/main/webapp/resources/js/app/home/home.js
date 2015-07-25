@@ -10,6 +10,7 @@ function ViewModel() {
 		avatar : ko.observable(),
 		avatarFull : ko.observable(),
 		avatarMedium : ko.observable(),
+		totalAchievements : ko.observable(),
 		games : ko.observableArray([])
 	}
 
@@ -20,6 +21,7 @@ function ViewModel() {
 		logoUrl : ko.observable(),
 		logoThumbnailUrl : ko.observable(),
 		iconUrl : ko.observable(),
+		totalAchievements : ko.observable(),
 		achievements : ko.observableArray([])
 	}
 
@@ -35,9 +37,10 @@ function ViewModel() {
 	self.isCompareAchievement = ko.observable(false);
 
 	self.amigoComparacao = {
-		nickName : ko.observable(),
-		avatar : ko.observable(),
-		achievements : ko.observableArray([])	
+		nickName: ko.observable(),
+		avatar: ko.observable(),
+		totalAchievements: ko.observable(),
+		achievements: ko.observableArray([])	
 	}
 
 	self.loadSteamProfile = function() {
@@ -103,11 +106,17 @@ function ViewModel() {
 		    mimeType: 'application/json',
 		    success: function(data) { 
 				console.log("data: ", data);
-				$("#ajaxLoader").hide();
-				self.amigoComparacao.nickName(data.friendProfile.nickName);
-				self.amigoComparacao.avatar(data.friendProfile.avatar);
+
+				self.game.logoUrl(data.gameLogoUrl);
+				self.game.name(data.gameName);
+				self.game.totalAchievements(data.totalGameAchievement);
+				self.usuario.totalAchievements(data.totalAchievementUnlockedUser);
+				self.amigoComparacao.totalAchievements(data.totalAchievementUnlockedFriend);
+				self.amigoComparacao.nickName(data.nickNameFriend);
+				self.amigoComparacao.avatar(data.avatarFriend);
 				self.amigoComparacao.achievements(data.achievementCompareDto);
 				self.isCompareAchievement(true);
+				$("#ajaxLoader").hide();
 		    },
 		    error:function(data,status,er) { 
 		        console.log("data: ", data);
