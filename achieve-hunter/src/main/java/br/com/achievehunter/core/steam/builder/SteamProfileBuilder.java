@@ -16,6 +16,7 @@ public class SteamProfileBuilder {
 	private String avatarMediumUrl;
 	private String avatarFullUrl;
 	private List<Game> listaGames;
+	private boolean isPublic;
 	
 	private SteamProfileBuilder() {};
 	
@@ -79,7 +80,13 @@ public class SteamProfileBuilder {
 		profile.setAvatarMedium(this.avatarMediumUrl);
 		profile.setAvatarFull(this.avatarFullUrl);
 		profile.setGames(listaGames);
+		profile.setIsPublic(this.isPublic);
 		return profile;
+	}
+
+	public SteamProfileBuilder withProfilePublic(boolean isPublic) {
+		this.isPublic = isPublic;
+		return this;
 	}
 
 	

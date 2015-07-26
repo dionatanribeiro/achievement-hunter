@@ -2,6 +2,8 @@ package br.com.achievehunter.model.steam;
 
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
@@ -18,6 +20,9 @@ public class Profile {
 	private String avatarMedium;
 	private String avatarFull;
 	private List<Game> games;
+
+	@Transient
+	private Boolean isPublic;
 
 	public Long getSteamId() {
 		return steamId;
@@ -90,5 +95,15 @@ public class Profile {
 	public void setGames(List<Game> games) {
 		this.games = games;
 	}
+
+	public Boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+	
+	
 	
 }
