@@ -29,4 +29,20 @@ public abstract class SteamWebApiUrlUtils {
 		return urlFriends.toString();
 	}
 	
+	public static String getOwnedGames(Long steamId) {
+		StringBuilder urlOwnedGames = new StringBuilder();
+		urlOwnedGames.append(SteamWebApiArgs.BASE_URL.getMessage());
+		urlOwnedGames.append(SteamWebApiArgs.PLAYER_GAME_LIST.getMessage());
+		urlOwnedGames.append(SteamWebApiArgsBuilder.createParam().addApiKey().addSteamId(steamId).addAppInfo().addFormatJson().getArgs());
+		return urlOwnedGames.toString();
+	}
+	
+	public static String getAchievementsUnlocked(Long steamId, Integer appId) {
+		StringBuilder urlAchievementsUnlocked = new StringBuilder();
+		urlAchievementsUnlocked.append(SteamWebApiArgs.BASE_URL.getMessage());
+		urlAchievementsUnlocked.append(SteamWebApiArgs.PLAYER_GAME_STATS.getMessage());
+		urlAchievementsUnlocked.append(SteamWebApiArgsBuilder.createParam().addAppId(appId).addApiKey().addSteamId(steamId).addFormatJson().getArgs());
+		return urlAchievementsUnlocked.toString();
+	}
+	
 }
