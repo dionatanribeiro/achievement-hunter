@@ -16,8 +16,10 @@ import br.com.achievehunter.core.steam.steamcondenser.SteamCondenserFacade;
 import br.com.achievehunter.core.steam.webapi.SteamWebApiService;
 import br.com.achievehunter.model.dto.AchievementCompareGridDto;
 import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
+import br.com.achievehunter.model.dto.RankingTotalAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
+import br.com.achievehunter.service.ranking.RankingTotalAchievementService;
 
 import com.github.koraktor.steamcondenser.exceptions.SteamCondenserException;
 
@@ -32,6 +34,9 @@ public class SteamController {
 	
 	@Inject
 	private SteamWebApiService steamService;
+	
+	@Inject
+	private RankingTotalAchievementService rankingTotalAchievementService;
 	
 	@ResponseBody
 	@RequestMapping(value = "/load-profile/{steamId}", method = RequestMethod.GET)
@@ -61,6 +66,12 @@ public class SteamController {
 	@RequestMapping(value = "/compare-achievements/{idGame}/{idUser}/{idFriend}/", method = RequestMethod.GET)
 	public AchievementCompareGridDto compareAchievements(@ModelAttribute ComparacaoAchievementDto comparacaoAchievementDto) {
 		return steamCondenserFacade.compareFriendAchievements(comparacaoAchievementDto);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/ranking/{steamId}", method = RequestMethod.GET)
+	public List<RankingTotalAchievementDto> rankingTotalAchievementByUser(@PathVariable("steamId") Long steamId) {
+		return rankingTotalAchievementService.loadTotalAchievementRankingBySteamId(steamId);
 	}
 	
 }

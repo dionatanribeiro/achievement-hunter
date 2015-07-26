@@ -13,4 +13,9 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/ranking", method = RequestMethod.GET)
+	public String ranking(Model model) {
+		return "ranking";
+	}
+	
 }
