@@ -51,7 +51,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 			Iterator<JsonNode> elements = players.elements();
 			while (elements.hasNext()) {
 				JsonNode json = elements.next();
-				boolean isPublic = json.get("personastate").asInt() == 1;
+				Boolean isPublic = json.get("communityvisibilitystate").asInt() == 3;
 				boolean isRealNameInformed = json.get("realname") != null;
 				// Verificar se deve adicionar usuarios com perfil nao publico dentro da lista.
 				profileList.add(SteamProfileBuilder.builder().withSteamId(json.get("steamid").asLong())
@@ -60,6 +60,7 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 					.withAvatarMediumUrl(json.get("avatarmedium").textValue())
 					.withAvatarFullUrl(json.get("avatarfull").textValue())
 					.withRealName(isPublic && isRealNameInformed ? json.get("realname").textValue() : "")
+					.withProfilePublic(isPublic)
 					.build());
 			}
 		} catch (IOException e) {
@@ -67,5 +68,45 @@ public class SteamWebApiServiceImpl implements SteamWebApiService {
 		}
 		return profileList;
 	}
-	
+
+	@Override
+	public List<Integer> findOwnedGamesIdBySteamId(Long steamId) {
+		List<Integer> ownedGamesIds = new ArrayList<>();
+		try {
+			JsonNode rootNode = mapper.readTree(ReadURL.read(SteamWebApiUrlUtils.getOwnedGames(steamId)));
+			JsonNode games = rootNode.findValue("games");
+			Iterator<JsonNode> elements = games.elements();
+			while (elements.hasNext()) {
+				JsonNode json = elements.next();
+				boolean gameHasStats = json.get("has_community_visible_stats") != null && json.get("has_community_visible_stats").asBoolean();
+				if (gameHasStats) {
+					ownedGamesIds.add(json.get("appid").asInt());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ownedGamesIds;
+	}
+
+	@Override
+	public Long findTotalAchievementUnlockedBySteamIdAndAppId(Long steamId, Integer appId) {
+		Long totalAchievementsUnlocked = 0L;
+		try {
+			JsonNode rootNode = mapper.readTree(ReadURL.readJSONFeed(SteamWebApiUrlUtils.getAchievementsUnlocked(steamId, appId)));
+			boolean gameHasAchievements = rootNode.findValue("achievements") != null;
+			if (gameHasAchievements) {
+			JsonNode achievementsUnlocked = rootNode.findValue("achievements");
+			Iterator<JsonNode> elements = achievementsUnlocked.elements();
+			while (elements.hasNext()) {
+				JsonNode json = elements.next();
+				totalAchievementsUnlocked += json.get("achieved").asBoolean() ? 1 : 0;
+			}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return totalAchievementsUnlocked;
+	}
+
 }

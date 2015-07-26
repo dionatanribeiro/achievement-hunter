@@ -8,5 +8,6 @@ public interface SteamWebApiService {
 	
 	Profile findProfileBySteamId(Long steamId);
 	List<Profile> findFriendsBySteamId(Long steamId);
-	
+	List<Integer> findOwnedGamesIdBySteamId(Long steamId);
+	Long findTotalAchievementUnlockedBySteamIdAndAppId(Long steamId, Integer appId);
 }

@@ -1,8 +1,9 @@
 package br.com.achievehunter.core.steam.webapi;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
@@ -44,6 +45,32 @@ private SteamWebApiService service;
 		
 		//Assert
 		assertThat("Deve encontrar a lista de amigos do jogador", friendsList.isEmpty(), is(false));
+	}
+	
+	@Test
+	public void quandoBuscaListaDeIdDeJogos() {
+		//Arrange
+		long steamId = 76561198003170021L;
+		
+		//Act
+		List<Integer> listGamesId= service.findOwnedGamesIdBySteamId(steamId);
+		
+		//Assert
+		assertThat("Lista de ids retornada não deve ser nula", listGamesId, notNullValue());
+		assertThat("Lista de ids retornada não deve ser vazia", listGamesId.isEmpty(), is(false));
+	}
+	
+	@Test
+	public void quandoCalculaTotalDeAchievementsDesbloqueadosDeUmJogo() {
+		//Arrange
+		long steamId = 76561198003170021L;
+		int idDarkSouls2 = 236430;
+		
+		//Act
+		Long totalAchievementsDesbloqueados = service.findTotalAchievementUnlockedBySteamIdAndAppId(steamId, idDarkSouls2);
+		
+		//Assert
+		assertThat("Total de achievements desbloqueados não deve ser zero", totalAchievementsDesbloqueados.intValue(), greaterThan(0));
 	}
 	
 }
