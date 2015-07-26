@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import br.com.achievehunter.model.dto.AchievementCompareGridDto;
 import br.com.achievehunter.model.dto.ComparacaoAchievementDto;
+import br.com.achievehunter.model.dto.RankingTotalAchievementDto;
 import br.com.achievehunter.model.steam.Game;
 import br.com.achievehunter.model.steam.Profile;
 
@@ -125,6 +126,22 @@ public class SteamCondenserFacadeTest {
 		//Assert
 		assertThat("Deve retornar o logo do jogo", !Strings.isNullOrEmpty(compareAchievementGrid.getGameLogoUrl()), is(true));
 		assertThat("Deve retornar o nome do jogo", !Strings.isNullOrEmpty(compareAchievementGrid.getGameName()), is(true));
+	}
+	
+	@Test
+	public void quandoCriaRankingTotalAchievements() {
+		//Arrange
+		List<Profile> profileList = new ArrayList<>();
+		profileList.add(facade.findSteamProfileBySteamId64(76561198003170021L));
+		profileList.add(facade.findSteamProfileBySteamId64(76561198079620996L));
+		
+		//Act
+		List<RankingTotalAchievementDto> rankingTotalAchievement = facade.findRankingTotalAchievementByUser(profileList);
+		
+		//Assert
+		assertThat("Lista não deve ser nula", rankingTotalAchievement, notNullValue());
+		assertThat("Lista não deve ser vazia", rankingTotalAchievement.isEmpty(), is(false));
+		assertThat("Deve retornar um total de achievements maior que zero", rankingTotalAchievement.get(0).getTotalAchieved().intValue(), greaterThan(0));
 	}
 	
 	private ComparacaoAchievementDto buildComparacaoAchievementsDto() {
