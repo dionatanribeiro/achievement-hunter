@@ -50,6 +50,11 @@ public class SteamWebApiArgsBuilder {
 		return this;
 	}
 
+	public SteamWebApiArgsBuilder addAppInfo() {
+		args.put("include_appinfo", "1");
+		return this;
+	}
+	
 	public String getArgs() {
 		String urlArgs = "?";
         boolean first = true;
