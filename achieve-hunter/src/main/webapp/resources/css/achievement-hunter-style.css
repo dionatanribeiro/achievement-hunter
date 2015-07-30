@@ -1,4 +1,4 @@
-text-center {
+.text-center {
     height: 90px;
     width: 270px;
     text-align: center;
@@ -7,11 +7,11 @@ text-center {
     line-height: 90px;
 }
 
-box-spacing-m {
+.box-spacing-m {
 	padding: 10px;
 }
 
-box-spacing-g {
+.box-spacing-g {
 	padding: 50px;
 }
 

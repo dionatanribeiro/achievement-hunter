@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/achievement-hunter-style.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ajax-loader.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/avatar-circle.css" />
+
 </head>
 <body>
 

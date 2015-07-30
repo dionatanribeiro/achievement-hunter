@@ -11,7 +11,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="home">Achievement Hunter</a>
+            <a class="navbar-brand" href="home">
+                <i class="fa fa-steam"></i>
+                Achievement Hunter
+            </a>
         </div>
 
         <!-- Top Menu Items -->
@@ -54,20 +57,19 @@
                     <div class="row">
                         <div class="col-lg-6">
 	                        <a href="#" class="circle">
-								<img height="64" width="64" 
-								src="http://static.giantbomb.com/uploads/scale_small/0/2241/663872-vault_boy_manip.jpg" alt="Usuario">
+								<img height="64" width="64" data-bind="attr: {src: usuario.avatarMedium}" alt="Usuario">
 							</a>
                         </div>
                         <div class="col-lg-6" style="padding: 5px">
-	                        <h3 style="color: white">
-	                        	Seigen
+	                        <h3 id="nickName" style="color: white">
+	                        	<p data-bind="text: usuario.nickName">{{Player_Name}}</p>
 	                        </h3>
                         </div>
                     </div>
 				</li>
 				<li style="padding: 10px"></li>
                 <li class="active">
-                    <a href="index.html">
+                    <a href="/achieve-hunter/home">
                     	<i class="fa fa-fw fa-dashboard"></i> 
                     	Perfil
                     </a>

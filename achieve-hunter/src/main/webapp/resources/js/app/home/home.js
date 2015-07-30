@@ -43,6 +43,8 @@ function ViewModel() {
 		achievements: ko.observableArray([])	
 	}
 
+	self.esconderMenuPerfil = ko.observable(false);
+
 	self.loadSteamProfile = function() {
 		$("#ajaxLoader").show();
 		$.getJSON('/achieve-hunter/steam/load-profile/' + self.steamIdInformado(), function(data) {
@@ -50,7 +52,8 @@ function ViewModel() {
 			self.usuario.steamId(data.steamId);
 			self.usuario.realName(data.realName);
 			self.usuario.nickName(data.nickName);
-			self.usuario.resumo(data.resumo);
+			var resumoFormatado = data.resumo.replace("<br>", "");
+			self.usuario.resumo(resumoFormatado);
 			self.usuario.endereco(data.endereco);
 			self.usuario.avatar(data.avatar);
 			self.usuario.avatarFull(data.avatarFull);
@@ -58,6 +61,7 @@ function ViewModel() {
 			self.usuario.games(data.games);
 			self.gamesCombo(data.games);
 			self.loadFriends();
+			self.esconderMenuPerfil(true);
 		}).done(function() {
 			$("#ajaxLoader").hide();
 		});
